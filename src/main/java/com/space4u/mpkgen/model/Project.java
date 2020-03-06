@@ -20,7 +20,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
-    private int projectNo;
+    private int projectNum;
     private String tenant;
     private String date;
     private String floor;

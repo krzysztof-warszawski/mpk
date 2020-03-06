@@ -20,8 +20,8 @@ public class Building {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private int idBuilding;
-    private int nrBuilding;
+    private int id;
+    private int buildingNum;
     private String name;
     private String address;
     private String owner;
