@@ -1,7 +1,7 @@
 package com.space4u.mpkgen.repository;
 
-import com.space4u.mpkgen.model.Building;
-import com.space4u.mpkgen.model.Project;
+import com.space4u.mpkgen.entity.Building;
+import com.space4u.mpkgen.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.space4u.mpkgen.service;
 
-import com.space4u.mpkgen.model.Building;
+import com.space4u.mpkgen.entity.Building;
 
 import java.util.List;
 

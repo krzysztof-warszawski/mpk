@@ -1,6 +1,6 @@
 package com.space4u.mpkgen.service;
 
-import com.space4u.mpkgen.model.ServiceType;
+import com.space4u.mpkgen.entity.ServiceType;
 
 import java.util.List;
 

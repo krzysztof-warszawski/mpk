@@ -1,4 +1,4 @@
-package com.space4u.mpkgen.model;
+package com.space4u.mpkgen.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "service_type")
 @Slf4j
 @Getter
 @Setter

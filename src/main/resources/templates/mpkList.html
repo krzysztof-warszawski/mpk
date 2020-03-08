@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>MPK generator</title>
+</head>
+
+<body >
+
+<div class="divCentered">
+    <br>
+    <img class="imgProject" align="center" src="../static/images/space4uProjectList.png"
+         th:src="@{/images/space4uProjectList.png}"/>
+    <a id = "createNewMPKButton" href="building_choose" class = "btn btn-primary btn-sm" >Stwórz nowy MPK</a>
+    <a id ="fetchProjectsButton" href="downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
+
+</div>
+
+<div align="center" class="divCentered">
+    <br>
+    <table  border="1" class="table table-striped table-dark"/>
+    <thead>
+    <thead style="text-align: center"/>
+    <tr>
+        <th>Budynek</th>
+        <th>Data</th>
+        <th>Piętra</th>
+        <th>MPK</th>
+        <th>Nr projektu</th>
+        <th>Krótki opis</th>
+        <th>Najemca</th>
+        <th>Usługa</th>
+        <th>Usuń Projekt</th>
+    </tr>
+    </thead>
+    <tr th:each="oneProject : ${projects}">
+        <td th:text="${oneProject.getBuilding().getName()}"/>
+        <td th:text="${oneProject.date}"/>
+        <td th:text="${oneProject.floor}"/>
+        <td th:text="${oneProject.mpk}"/>
+        <td th:text="${oneProject.projectNum}"/>
+        <td th:text="${oneProject.shortDescription}"/>
+        <td th:text="${oneProject.tenant}"/>
+        <td th:text="${oneProject.getServiceType().getName()}"/>
+        <td>                    &nbsp;&nbsp;&nbsp;
+            <a th:href="@{'/delete/' + ${oneProject.id}}">Usuń projekt</a>
+        </td>
+    </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

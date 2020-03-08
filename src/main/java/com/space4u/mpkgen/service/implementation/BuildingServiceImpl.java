@@ -1,6 +1,6 @@
 package com.space4u.mpkgen.service.implementation;
 
-import com.space4u.mpkgen.model.Building;
+import com.space4u.mpkgen.entity.Building;
 import com.space4u.mpkgen.repository.BuildingRepository;
 import com.space4u.mpkgen.service.BuildingService;
 import lombok.AllArgsConstructor;

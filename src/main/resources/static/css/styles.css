@@ -1,0 +1,40 @@
+body {
+    background: rgb(200,200,200);
+}
+
+.divCentered {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.rightUpperCornerDiv {
+    margin-right: 50px;
+}
+
+.btn-sm {
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
+.imgProject {
+    border: 1px solid darkgreen;
+}
+
+.btn-login {
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
+.btn-building {
+    padding: 10px;
+}
+
+#createNewMPKButton {
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+#fetchProjectsButton{
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}

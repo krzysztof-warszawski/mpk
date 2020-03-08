@@ -1,6 +1,6 @@
 package com.space4u.mpkgen.util;
 
-import com.space4u.mpkgen.model.Project;
+import com.space4u.mpkgen.entity.Project;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

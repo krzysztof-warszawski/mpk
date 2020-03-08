@@ -1,4 +1,4 @@
-package com.space4u.mpkgen.model;
+package com.space4u.mpkgen.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,10 +20,12 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
+    @Column(name = "project_num")
     private int projectNum;
     private String tenant;
     private String date;
     private String floor;
+    @Column(name = "short_description")
     private String shortDescription;
     private String mpk;
 

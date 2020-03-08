@@ -1,4 +1,4 @@
-package com.space4u.mpkgen.model;
+package com.space4u.mpkgen.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Slf4j
@@ -15,17 +14,14 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Building {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
-    private int buildingNum;
-    private String name;
-    private String address;
-    private String owner;
+    private String firstName;
+    private String lastName;
+    private String email;
 
-    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
-    private List<Project> projects;
 }

@@ -1,4 +1,4 @@
-INSERT INTO `AHeMtAEnfa`.`servtype` (`idservtype`, `name`)
+INSERT INTO `mpks4u`.`service_type` (`id`, `name`)
 VALUES ('0', 'Kalkulacja kosztowa'),
        ('1', 'Konsultacje techniczne'),
        ('2', 'Audyt techniczny / Due diligence'),
@@ -7,7 +7,7 @@ VALUES ('0', 'Kalkulacja kosztowa'),
        ('5', 'Realizacja'),
        ('6', 'Gwarancja');
 
-INSERT INTO `AHeMtAEnfa`.`building` (`id_building`, `address`, `name`, `nr_building`,`owner`)
+INSERT INTO `mpks4u`.`building` (`id`, `address`, `name`, `building_num`, `owner`)
 VALUES ('11', 'Łódz ul. Wólczańska 178', 'University Business Park', '11','GTC'),
        ('12', ' Warszawa ul. Postępu 21 ', 'Park Postępu', '12','IMMOFINANZ'),
         ('13',' Warszawa ul. Stanisława Augusta','Apartamenty Króla Stasia','13',' LEOSET'),
@@ -58,16 +58,16 @@ VALUES ('11', 'Łódz ul. Wólczańska 178', 'University Business Park', '11','G
          ('58','','CISCO_Warsaw_GC_RFP','58',''),
          ('59','','Oxygen Park','59',' SPIE');
 
-INSERT INTO `AHeMtAEnfa`.`project`
-(`idproject`,
+INSERT INTO `mpks4u`.`project`
+(`id`,
  `date`,
  `floor`,
  `mpk`,
- `nr_project`,
+ `project_num`,
  `short_description`,
  `tenant`,
  `building_id`,
- `servtype_id`)
+ `service_type_id`)
  VALUES ('1','','','0110000','0','OFERTOWANIE I MARKETING','','11','0'),
      ('2','201702','','0110010','1','Kalkulacja kosztowa Ericcson','Ericcson','11','0'),
      ('3','201707','','0110021','2','Konsulatacje techniczne - budynek UBP w Łodzi','','11','1'),

@@ -1,10 +1,9 @@
 package com.space4u.mpkgen.service.implementation;
 
-import com.space4u.mpkgen.model.Building;
-import com.space4u.mpkgen.model.Project;
-import com.space4u.mpkgen.repository.BuildingRepository;
+import com.space4u.mpkgen.entity.Building;
+import com.space4u.mpkgen.entity.Project;
+import com.space4u.mpkgen.entity.ServiceType;
 import com.space4u.mpkgen.repository.ProjectRepository;
-import com.space4u.mpkgen.repository.ServiceTypeRepository;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import lombok.AllArgsConstructor;
@@ -18,13 +17,13 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;
-    private BuildingRepository buildingRepository;
-    private ServiceTypeRepository serviceTypeRepository;
+//    private BuildingRepository buildingRepository;
+//    private ServiceTypeRepository serviceTypeRepository;
 
     @Override
     public List<Project> findAll() {
         List<Project> projectList = projectRepository.findAll();
-        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName())); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
+//        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName())); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
         return projectList;
     }
 
@@ -44,18 +43,51 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void createProjectForProposals(String MPK, Building building, ServiceTypeService serviceTypeService) {
-
+    public void createProjectForProposals(String MPK, Building building, ServiceTypeService serviceTypeService) { // tu mamy void <<<<<<<<<<<<<<<<<<<<<<<
+        Project project = new Project();
+        project.setMpk(MPK);
+        project.setProjectNum(0);
+        project.setBuilding(building);
+        ServiceType serviceType = serviceTypeService.getServiceTypeById(0);
+        project.setServiceType(serviceType);
+        project.setShortDescription("OFERTOWANIE I MARKETING");
+        projectRepository.save(project);
     }
 
     @Override
-    public Project createProjectForGuarantee(StringBuffer MPK, Project newProject, ServiceTypeService serviceTypeService) {
-        return null;
+    public Project createProjectForGuarantee(StringBuffer MPK, Project newProject, ServiceTypeService serviceTypeService) { // tu mamy return <<<<<<<<<<<<<<<<<<<<<<<
+        Project guaranteeProject = new Project();
+        guaranteeProject.setProjectNum(newProject.getProjectNum());
+        guaranteeProject.setMpk(MPK.toString());
+        guaranteeProject.setBuilding(newProject.getBuilding());
+        guaranteeProject.setServiceType(serviceTypeService.getServiceTypeById(6));
+        guaranteeProject.setTenant(newProject.getTenant());
+        guaranteeProject.setShortDescription("Gwarancja dla " + newProject.getDate() + "_" + newProject.getShortDescription());
+        return guaranteeProject;
     }
+
+    /*
+    * tworzymy MPK na podstawie nr projektu i liczby znaków
+    * numery budynków zaczynaja sie od 11 wiec nie bedzie krotszy niz 2 znaki
+     */
 
     @Override
     public StringBuffer createMpkNumLastCharacter(int currentBuildingNum, int currentProjectNum) {
-        return null;
+        StringBuffer MPK = new StringBuffer();
+
+        if (String.valueOf(currentBuildingNum).length() == 2) {
+            MPK.append("0");
+        }
+        MPK.append(currentBuildingNum);
+
+        if (String.valueOf(currentProjectNum).length() == 1) {
+            MPK.append("00");
+        } else if (String.valueOf(currentProjectNum).length() == 2) {
+            MPK.append("0");
+        }
+        MPK.append(currentProjectNum);
+
+        return MPK;
     }
 
     @Override
