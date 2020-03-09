@@ -29,4 +29,6 @@ public class Building {
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private List<Project> projects;
+
+
 }

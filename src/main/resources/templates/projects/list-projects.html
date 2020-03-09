@@ -4,6 +4,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link th:href="@{../css/styles.css}" rel="stylesheet" />
@@ -17,8 +19,16 @@
     <br>
     <img class="imgProject" align="center" src="../static/images/space4uProjectList.png"
          th:src="@{/images/space4uProjectList.png}"/>
-    <a id = "createNewMPKButton" href="building_choose" class = "btn btn-primary btn-sm" >Stwórz nowy MPK</a>
-    <a id ="fetchProjectsButton" href="downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
+    <a id = "createNewMPKButton" href="/buildings/building_choose" class = "btn btn-primary btn-sm" >Stwórz nowy MPK</a>
+    <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
+
+    <!-- Add a logout button -->
+    <form action="#" th:action="@{/logout}"
+          method="POST">
+
+        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+    </form>
 
 </div>
 
@@ -36,7 +46,7 @@
         <th>Krótki opis</th>
         <th>Najemca</th>
         <th>Usługa</th>
-        <th>Usuń Projekt</th>
+        <th>Edytuj/Usuń Projekt</th>
     </tr>
     </thead>
     <tr th:each="oneProject : ${projects}">
@@ -49,7 +59,23 @@
         <td th:text="${oneProject.tenant}"/>
         <td th:text="${oneProject.getServiceType().getName()}"/>
         <td>                    &nbsp;&nbsp;&nbsp;
-            <a th:href="@{'/delete/' + ${oneProject.id}}">Usuń projekt</a>
+            <div sec:authorize="hasRole('ROLE_ADMIN')">
+
+                <!-- Add "delete" button/link -->
+                <a th:href="@{/projects/delete(id=${oneProject.id})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if (!(confirm('Czy na pewno chcesz usunąć ten projekt?'))) return false">
+                    Usuń
+                </a>
+
+            </div>
+
+            <!-- Add "update" button/link -->
+            <a th:href="@{/projects/edit(id=${oneProject.id})}"
+               class="btn btn-info btn-sm">
+                Edytuj
+            </a>
+
         </td>
     </tr>
     </table>

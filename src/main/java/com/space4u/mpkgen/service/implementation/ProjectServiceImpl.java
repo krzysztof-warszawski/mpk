@@ -23,9 +23,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> findAll() {
         List<Project> projectList = projectRepository.findAll();
-//        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName())); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
+        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName())); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
+//        projectList.sort(Comparator.comparing(o -> o.getBuilding().getName()));
         return projectList;
     }
+
 
     @Override
     public void deleteProjectById(int id) {

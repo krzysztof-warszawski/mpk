@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Choose the building</title>
+</head>
+<body>
+<div align="center">
+    <br>
+    <form action="#" th:action="@{/mpk/generateMPK}"  method="GET">
+        <button type="submit" th:name="chosenBuildingId" th:value="${chosenBuilding.getId()}" class="btn btn-info btn-login btn-building"
+                th:text="'Generuj MPK dla nowego projektu na budynku ' + ${chosenBuilding.getName()}">Generuj </button>
+    </form>
+    <br>
+</div>
+<div align="center" class="divCentered">
+
+    <table  border="1" class="table table-striped table-dark"/>
+    <thead>
+    <thead style="text-align: center"/>
+    <tr>
+        <th>ID projektu</th>
+        <th>Data</th>
+        <th>Piętra</th>
+        <th>MPK</th>
+        <th>Nr projektu</th>
+        <th>Krótki opis</th>
+        <th>Najemca</th>
+        <th>Usługa</th>
+    </tr>
+    </thead>
+    <tr th:each="oneProject : ${projectsForBuilding}">
+        <td th:text="${oneProject.getId()}"/>
+        <td th:text="${oneProject.date}"/>
+        <td th:text="${oneProject.floor}"/>
+        <td th:text="${oneProject.mpk}"/>
+        <td th:text="${oneProject.projectNum}"/>
+        <td th:text="${oneProject.shortDescription}"/>
+        <td th:text="${oneProject.tenant}"/>
+        <td th:text="${oneProject.getServiceType().getName()}"/>
+    </tr>
+    </table>
+</div>
+</body>
+</html>

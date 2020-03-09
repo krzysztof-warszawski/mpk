@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Generate MPK Number</title>
+</head>
+<body>
+<div align="center">
+    <h1 th:text="'Generuj MPK dla nowego projektu na budynku ' + ${chosenBuilding.getName()}">Stworz nowe miejsce powstawania kosztów </h1>
+    <br>
+</div>
+<div align="center" class="divCentered">
+    <form action="#" th:action="@{/mpk/saveMPK}" th:object="${newProject}"
+          method="post">
+        <table border="0" cellpadding="10">
+            <tr>
+                <fieldset th:cellpadding="10" vertical-align="middle">
+                    <br>
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(1).getId()}" />
+                    <label th:for="${serviceTypeList.get(1).getId()}" th:text="${serviceTypeList.get(1).getName()}"></label>
+                    <br>
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(2).getId()}" />
+                    <label th:for="${serviceTypeList.get(2).getId()}" th:text="${serviceTypeList.get(2).getName()}"></label>
+                    <br>
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(3).getId()}" />
+                    <label th:for="${serviceTypeList.get(3).getId()}" th:text="${serviceTypeList.get(3).getName()}"></label>
+                    <br>
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(4).getId()}" />
+                    <label th:for="${serviceTypeList.get(4).getId()}" th:text="${serviceTypeList.get(4).getName()}"></label>
+                    <br>
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(5).getId()}" />
+                    <label th:for="${serviceTypeList.get(5).getId()}" th:text="${serviceTypeList.get(5).getName()}"></label>
+                    <br>
+                </fieldset>
+            </tr>
+            <tr>
+                <td>Najemca:</td>
+                <td><input type="text" th:field="*{tenant}" /></td>
+            </tr>
+            <tr>
+                <td>Data:</td>
+                <td><input type="text" th:field="*{date}" /></td>
+            </tr>
+            <tr>
+                <td>Piętro:</td>
+                <td><input type="text" th:field="*{floor}" /></td>
+            </tr>
+            <tr th:rows="3">
+                <td>Krótki opis:</td>
+                <td><input type="text" th:field="*{shortDescription}" /></td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><button type="submit" th:name="chosenBuildingId" th:value="${chosenBuilding.getId()}"
+                                        class="btn btn-info btn-login btn-building">Zapisz</button> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Choose the building</title>
+</head>
+<body>
+
+
+
+<div align="center">
+    <div class="col-lg-3">
+        <form action="#" th:action="@{/buildings/chooseBuilding}"  method="GET">
+            <select class="form-control" id="buildingId" name="buildingId">
+                <option value="">Wybierz budynek z listy</option>
+                <option th:each="b : ${buildings}"
+                        th:value="${b.id}"
+                        th:text="${b.name} + ' ' + ${b.owner}"></option>
+            </select>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-info btn-login btn-building">Pokaż projekty dla wybranego budynku</button>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<div align="center">
+    <form action="#" th:action="@{/buildings/addNewBuilding}" method="GET">
+        <button type="submit" class="btn btn-info btn-login btn-building">Dodaj nowy budynek do listy</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -28,23 +28,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("HTTP SEC>>>>>>>>>>");
+
         http.authorizeRequests()
 //                .antMatchers("/employees/showForm*").hasAnyRole("MANAGER", "ADMIN")
 //                .antMatchers("/employees/save*").hasAnyRole("MANAGER", "ADMIN")
-//                .antMatchers("/employees/delete").hasRole("ADMIN")
 //                .antMatchers("/employees/**").hasRole("EMPLOYEE")
-                .antMatchers("/mpkList").hasRole("MANAGER")
+                .antMatchers("/projects/delete").hasRole("ADMIN")
+                .antMatchers("/projects/edit").hasRole("MANAGER")
+                .antMatchers("/projects/saveEditedProject").hasRole("MANAGER")
+                .antMatchers("/projects/**").hasRole("EMPLOYEE")
+                .antMatchers("/buildings/**").hasRole("EMPLOYEE")
+                .antMatchers("/mpk/**").hasRole("EMPLOYEE")
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/loginForm")
-                .loginProcessingUrl("/authenticateTheUser")
-                .permitAll();
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/access-denied");
+                    .loginPage("/loginForm")
+                    .loginProcessingUrl("/authenticateTheUser")
+                    .permitAll()
+                .and()
+                .logout().permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied");
 
     }
 }
