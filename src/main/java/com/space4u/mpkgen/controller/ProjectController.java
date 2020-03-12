@@ -75,15 +75,18 @@ public class ProjectController {
     public String saveEditedProject(@ModelAttribute("addProjectRequest") AddProjectRequest request){
         //nie powinno być opcji wyboru kalkulacji kosztowej - to powinno się dodawać tylko przy dodawaniu budynku
         //przy edycji nie ma też automatycznej generacji projektu gwarancyjnego
+        Project oldProject = projectService.getProjectById(projectId);
+        Building oldBuilding = oldProject.getBuilding();
         projectService.updateProject(request,projectId);
         Project editedProject = projectService.getProjectById(projectId);
         Building building = editedProject.getBuilding();
         ServiceType serviceType = editedProject.getServiceType();
         int currentProjectNr = projectService.getCurrentProjectNum(building);
-        editedProject.setProjectNum(currentProjectNr);
+        if(!oldBuilding.equals(building)){
+            editedProject.setProjectNum(currentProjectNr);}
         //projectService.save(project);
         int currentBuildingNr = building.getBuildingNum();
-        StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr,currentProjectNr);
+        StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr,editedProject.getProjectNum());
         MPK.append(serviceType.getId());
         editedProject.setMpk(MPK.toString());
         projectService.save(editedProject);
