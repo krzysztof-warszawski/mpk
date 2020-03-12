@@ -9,12 +9,12 @@
 </head>
 <body>
 <div align="center">
-    <h1 th:text="'Edytuj projekt o numerze MPK ' + ${project.getMpk()}">Edycja projektu</h1>
+    <h1 th:text="'Edytuj projekt o numerze MPK ' + ${addProjectRequest.getMpk()}">Edycja projektu</h1>
     <br>
 </div>
 <div align="center" class="divCentered">
 
-    <form action="#" th:action="@{/projects/saveEditedProject}" th:object="${project}"
+    <form action="#" th:action="@{/projects/saveEditedProject}" th:object="${addProjectRequest}"
           method="post">
         <table border="0" cellpadding="10">
             <tr>
@@ -27,11 +27,19 @@
             </tr>
             <tr>
                 <td>Budynek:</td>
-                <td><input type="text" th:field="*{building.name}"  readonly="readonly" /></td>
+                <td><select th:field="*{buildingId}" class="form-control" id="controlSelect1" >
+                        <div th:each="building : ${buildingList}">
+                            <option th:value="${building.id}" th:text="${building.name}"/>
+                        </div>
+                    </select></td>
             </tr>
             <tr>
                 <td>Typ usługi:</td>
-                <td><input type="text" th:field="*{serviceType.name}"  readonly="readonly" /></td>
+                <td><select th:field="*{serviceTypeId}" class="form-control" id="controlSelect2" >
+                    <div th:each="serviceType : ${serviceTypeList}">
+                        <option th:value="${serviceType.id}" th:text="${serviceType.name}"/>
+                    </div>
+                </select></td>
             </tr>
             <tr>
                 <td>Najemca:</td>

@@ -1,12 +1,16 @@
 package com.space4u.mpkgen.service.implementation;
 
+import com.space4u.mpkgen.api.request.AddProjectRequest;
 import com.space4u.mpkgen.entity.Building;
 import com.space4u.mpkgen.entity.Project;
 import com.space4u.mpkgen.entity.ServiceType;
+import com.space4u.mpkgen.repository.BuildingRepository;
 import com.space4u.mpkgen.repository.ProjectRepository;
+import com.space4u.mpkgen.repository.ServiceTypeRepository;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.math3.analysis.function.Add;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -17,8 +21,46 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;
-//    private BuildingRepository buildingRepository;
-//    private ServiceTypeRepository serviceTypeRepository;
+    private BuildingRepository buildingRepository;
+    private ServiceTypeRepository serviceTypeRepository;
+
+    @Override
+    public int addProject(AddProjectRequest request) {
+        Building building = buildingRepository.getOne(request.getBuildingId());
+        ServiceType serviceType = serviceTypeRepository.getOne(request.getServiceTypeId());
+        Project project = addProjectToDataSource(request, building,serviceType);
+        return project.getId();
+    }
+
+    private Project addProjectToDataSource(AddProjectRequest request, Building building, ServiceType serviceType){
+        Project project = new Project();
+        project.setFloor(request.getFloor());
+        project.setDate(request.getDate());
+        project.setTenant(request.getTenant());
+        project.setShortDescription(request.getShortDescription());
+        project.setServiceType(serviceType);
+        project.setProjectNum(request.getProjectNum());
+        project.setMpk(request.getMpk());
+        project.setBuilding(building);
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public void updateProject(AddProjectRequest request, int id) {
+        Project project = new Project();
+        project.setFloor(request.getFloor());
+        project.setDate(request.getDate());
+        project.setTenant(request.getTenant());
+        project.setShortDescription(request.getShortDescription());
+        project.setServiceType(serviceTypeRepository.getOne(request.getServiceTypeId()));
+        project.setProjectNum(request.getProjectNum());
+        project.setMpk(request.getMpk());
+        project.setBuilding(buildingRepository.getOne(request.getBuildingId()));
+        project.setId(id);
+        Project previousProject = projectRepository.getOne(id);
+        previousProject = project;
+        projectRepository.save(previousProject);
+    }
 
     @Override
     public List<Project> findAll() {

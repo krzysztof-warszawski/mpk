@@ -1,24 +1,34 @@
 package com.space4u.mpkgen.controller;
 
+import com.space4u.mpkgen.api.request.AddProjectRequest;
+import com.space4u.mpkgen.entity.Building;
 import com.space4u.mpkgen.entity.Project;
+import com.space4u.mpkgen.entity.ServiceType;
 import com.space4u.mpkgen.service.BuildingService;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import com.space4u.mpkgen.util.ExcelView;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Controller
-@AllArgsConstructor
+//@AllArgsConstructor
 @RequestMapping("/projects")
 public class ProjectController {
-
+    @Autowired
     private ProjectService projectService;
+    @Autowired
     private ServiceTypeService serviceTypeService;
+    @Autowired
     private BuildingService buildingService;
+    private int projectId;
 //    private EmployeeService employeeService;
 
 
@@ -41,13 +51,48 @@ public class ProjectController {
     @GetMapping("/edit")
     public String showEditProjectPage(@RequestParam(name="id") int id, Model model){
         Project project = projectService.getProjectById(id);
-        model.addAttribute("project", project);
+        AddProjectRequest addProjectRequest = new AddProjectRequest();
+        addProjectRequest.setBuildingId(project.getBuilding().getId());
+        addProjectRequest.setDate(project.getDate());
+        addProjectRequest.setFloor(project.getFloor());
+        addProjectRequest.setMpk(project.getMpk());
+        addProjectRequest.setProjectNum(project.getProjectNum());
+        addProjectRequest.setServiceTypeId(project.getServiceType().getId());
+        addProjectRequest.setShortDescription(project.getShortDescription());
+        addProjectRequest.setTenant(project.getTenant());
+        addProjectRequest.setId(project.getId());
+        List<Building> buildingList = buildingService.findAll();
+        List<ServiceType> serviceTypeList = serviceTypeService.findAll();
+        projectId = id;
+        model.addAttribute("buildingList",buildingList);
+        model.addAttribute("serviceTypeList", serviceTypeList);
+        model.addAttribute("addProjectRequest", addProjectRequest);
         return "/projects/edit_project";
     }
 
     @PostMapping("/saveEditedProject")
-    public String saveEditedProject(@ModelAttribute("project") Project project){
-        projectService.save(project);
+    public String saveEditedProject(@ModelAttribute("addProjectRequest") AddProjectRequest request){
+        //nie powinno być opcji wyboru kalkulacji kosztowej - to powinno się dodawać tylko przy dodawaniu budynku
+        projectService.updateProject(request,projectId);
+        Project editedProject = projectService.getProjectById(projectId);
+        Building building = editedProject.getBuilding();
+        ServiceType serviceType = editedProject.getServiceType();
+        int currentProjectNr = projectService.getCurrentProjectNum(building);
+        editedProject.setProjectNum(currentProjectNr);
+        //projectService.save(project);
+        int currentBuildingNr = building.getBuildingNum();
+        StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr,currentProjectNr);
+        MPK.append(serviceType.getId());
+        editedProject.setMpk(MPK.toString());
+        projectService.save(editedProject);
+        if(serviceType.getId() == 5){
+            //ustawiamy MPK dla nowego projektu - usuwamy 5 i zamieniamy na 6
+            MPK.deleteCharAt(MPK.length()-1);
+            MPK.append(6);
+            Project newGuaranteeProject = projectService.createProjectForGuarantee(MPK, editedProject, serviceTypeService);
+            projectService.save(newGuaranteeProject);
+        }
+
         return "redirect:/projects/list";
     }
 
