@@ -19,4 +19,5 @@ public interface ProjectService {
     StringBuffer createMpkNumLastCharacter(int currentBuildingNum, int currentProjectNum);
     int getCurrentProjectNum(Building building);
     Project getLastProject();
+    void setParameters(AddProjectRequest request, Project project);
 }

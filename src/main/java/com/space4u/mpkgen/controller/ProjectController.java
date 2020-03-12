@@ -52,7 +52,7 @@ public class ProjectController {
     public String showEditProjectPage(@RequestParam(name="id") int id, Model model){
         Project project = projectService.getProjectById(id);
         AddProjectRequest addProjectRequest = new AddProjectRequest();
-        addProjectRequest.setBuildingId(project.getBuilding().getId());
+        /*addProjectRequest.setBuildingId(project.getBuilding().getId());
         addProjectRequest.setDate(project.getDate());
         addProjectRequest.setFloor(project.getFloor());
         addProjectRequest.setMpk(project.getMpk());
@@ -60,7 +60,8 @@ public class ProjectController {
         addProjectRequest.setServiceTypeId(project.getServiceType().getId());
         addProjectRequest.setShortDescription(project.getShortDescription());
         addProjectRequest.setTenant(project.getTenant());
-        addProjectRequest.setId(project.getId());
+        addProjectRequest.setId(project.getId());*/
+        projectService.setParameters(addProjectRequest,project);
         List<Building> buildingList = buildingService.findAll();
         List<ServiceType> serviceTypeList = serviceTypeService.findAll();
         projectId = id;
@@ -73,6 +74,7 @@ public class ProjectController {
     @PostMapping("/saveEditedProject")
     public String saveEditedProject(@ModelAttribute("addProjectRequest") AddProjectRequest request){
         //nie powinno być opcji wyboru kalkulacji kosztowej - to powinno się dodawać tylko przy dodawaniu budynku
+        //przy edycji nie ma też automatycznej generacji projektu gwarancyjnego
         projectService.updateProject(request,projectId);
         Project editedProject = projectService.getProjectById(projectId);
         Building building = editedProject.getBuilding();
@@ -85,14 +87,6 @@ public class ProjectController {
         MPK.append(serviceType.getId());
         editedProject.setMpk(MPK.toString());
         projectService.save(editedProject);
-        if(serviceType.getId() == 5){
-            //ustawiamy MPK dla nowego projektu - usuwamy 5 i zamieniamy na 6
-            MPK.deleteCharAt(MPK.length()-1);
-            MPK.append(6);
-            Project newGuaranteeProject = projectService.createProjectForGuarantee(MPK, editedProject, serviceTypeService);
-            projectService.save(newGuaranteeProject);
-        }
-
         return "redirect:/projects/list";
     }
 

@@ -146,6 +146,19 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.findTopByOrderByIdDesc();
     }
 
+    @Override
+    public void setParameters(AddProjectRequest addProjectRequest, Project project) {
+        addProjectRequest.setBuildingId(project.getBuilding().getId());
+        addProjectRequest.setDate(project.getDate());
+        addProjectRequest.setFloor(project.getFloor());
+        addProjectRequest.setMpk(project.getMpk());
+        addProjectRequest.setProjectNum(project.getProjectNum());
+        addProjectRequest.setServiceTypeId(project.getServiceType().getId());
+        addProjectRequest.setShortDescription(project.getShortDescription());
+        addProjectRequest.setTenant(project.getTenant());
+        addProjectRequest.setId(project.getId());
+    }
+
 //    private Building extractBuildingFromRepository(int buildingId){
 //        Optional<Building> optionalBuilding = buildingRepository.findById(buildingId);
 //        if(!optionalBuilding.isPresent()){
