@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.math3.analysis.function.Add;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -159,7 +160,18 @@ public class ProjectServiceImpl implements ProjectService {
         addProjectRequest.setId(project.getId());
     }
 
-//    private Building extractBuildingFromRepository(int buildingId){
+    @Override
+    public List<Project> projectsOtherThanOffer() {
+        List<Project> allProjects = findAll();
+        List<Project> noOfferProjects = new ArrayList<>();
+        for (Project p: allProjects){
+            if(p.getServiceType().getId()!=0)
+                noOfferProjects.add(p);
+        }
+        return noOfferProjects;
+    }
+
+    //    private Building extractBuildingFromRepository(int buildingId){
 //        Optional<Building> optionalBuilding = buildingRepository.findById(buildingId);
 //        if(!optionalBuilding.isPresent()){
 //            throw new IllegalArgumentException("There is no such building in database");

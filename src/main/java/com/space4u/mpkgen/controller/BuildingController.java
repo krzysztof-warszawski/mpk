@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -60,5 +61,13 @@ public class BuildingController {
         projectService.createProjectForProposals(MPK,currentBuilding, serviceTypeService);
 
         return "redirect:/projects/list";
+    }
+
+    @GetMapping("/buildingsList")
+    public String showAllBuildings(Model model){
+        List<Building> buildings = buildingService.findAll();
+        buildings.sort(Comparator.comparing(building -> building.getName()));
+        model.addAttribute(buildings);
+        return "/buildings/list-buildings";
     }
 }

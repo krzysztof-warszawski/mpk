@@ -10,7 +10,7 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link th:href="@{../css/styles.css}" rel="stylesheet" />
     <meta charset="UTF-8">
-    <title>MPK generator</title>
+    <title>Editable Projects List</title>
 </head>
 
 <body >
@@ -19,10 +19,7 @@
     <br>
     <img class="imgProject" align="center" src="../static/images/space4uProjectList.png"
          th:src="@{/images/space4uProjectList.png}"/>
-    <a id = "createNewMPKButton" href="/buildings/building_choose" class = "btn btn-primary btn-sm" >Nowy MPK</a>
-    <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
-    <a id ="editDeleteProjectsButton" href="/projects/editableProjects" class = "btn btn-primary btn-sm" >Edytuj/usuń projekt</a>
-    <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
+    <a id = "backButton" href="/projects/list" class = "btn btn-primary btn-sm" >Wróć do listy wszystkich projektów</a>
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"
           method="POST">
@@ -47,9 +44,10 @@
         <th>Krótki opis</th>
         <th>Najemca</th>
         <th>Usługa</th>
+        <th>Edytuj/Usuń Projekt</th>
     </tr>
     </thead>
-    <tr th:each="oneProject : ${projects}">
+    <tr th:each="oneProject : ${noOfferProjects}">
         <td th:text="${oneProject.getBuilding().getName()}"/>
         <td th:text="${oneProject.date}"/>
         <td th:text="${oneProject.floor}"/>
@@ -58,27 +56,23 @@
         <td th:text="${oneProject.shortDescription}"/>
         <td th:text="${oneProject.tenant}"/>
         <td th:text="${oneProject.getServiceType().getName()}"/>
-        <!--
-        <td>                    &nbsp;&nbsp;&nbsp;
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-
+        <td>                    &nbsp;
+                <!-- Add "delete" button/link -->
                 <a th:href="@{/projects/delete(id=${oneProject.id})}"
                    class="btn btn-danger btn-sm"
                    onclick="if (!(confirm('Czy na pewno chcesz usunąć ten projekt?'))) return false">
                     Usuń
                 </a>
 
-            </div>
 
+            <!-- Add "update" button/link -->
             <a th:href="@{/projects/edit(id=${oneProject.id})}"
                class="btn btn-info btn-sm">
                 Edytuj
             </a>
 
         </td>
- -->
     </tr>
-
     </table>
 </div>
 
