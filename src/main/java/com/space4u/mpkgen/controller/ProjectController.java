@@ -105,5 +105,12 @@ public class ProjectController {
         return "redirect:/projects/list";
     }
 
+    @GetMapping("/editableProjects")
+    public String showEditableProjectsPage(Model model){
+        List<Project> noOfferProjects = projectService.projectsOtherThanOffer();
+        model.addAttribute("noOfferProjects",noOfferProjects);
+        return "projects/editableProjects";
+    }
+
 
 }

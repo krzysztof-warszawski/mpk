@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <title>Editable buildings list</title>
+</head>
+
+<body >
+
+<div class="divCentered">
+    <br>
+    <img class="imgProject" align="center" src="../static/images/space4uProjectList.png"
+         th:src="@{/images/space4uProjectList.png}"/>
+    <a id = "createNewMPKButton" href="/projects/list" class = "btn btn-primary btn-sm" >Wróć do listy projektów</a>
+    <!-- Add a logout button -->
+    <form action="#" th:action="@{/logout}"
+          method="POST">
+
+        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+    </form>
+
+</div>
+
+<div align="center" class="divCentered">
+    <br>
+    <table  border="1" class="table table-striped table-dark"/>
+    <thead>
+    <thead style="text-align: center"/>
+    <tr>
+        <th>Numer budynku</th>
+        <th>Nazwa budynku</th>
+        <th>Właściciel</th>
+        <th>Adres</th>
+        <th>Edytuj / usuń budynek</th>
+
+    </tr>
+    </thead>
+    <tr th:each="oneBuilding : ${buildingList}">
+        <td th:text="${oneBuilding.buildingNum}"/>
+        <td th:text="${oneBuilding.name}"/>
+        <td th:text="${oneBuilding.owner}"/>
+        <td th:text="${oneBuilding.address}"/>
+        <td>
+
+                <a th:href="@{/buildings/delete(id=${oneBuilding.id})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if (!(confirm('Czy na pewno chcesz usunąć ten budynek?'))) return false">
+                    Usuń
+                </a>
+
+
+            <a th:href="@{/building/edit(id=${oneBuilding.id})}"
+               class="btn btn-info btn-sm">
+                Edytuj
+            </a>
+
+        </td>
+    </tr>
+
+    </table>
+</div>
+
+
+</body>
+</html>

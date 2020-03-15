@@ -20,4 +20,5 @@ public interface ProjectService {
     int getCurrentProjectNum(Building building);
     Project getLastProject();
     void setParameters(AddProjectRequest request, Project project);
+    List<Project> projectsOtherThanOffer();
 }
