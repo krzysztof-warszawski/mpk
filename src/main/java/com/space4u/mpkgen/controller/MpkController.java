@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -31,6 +32,10 @@ public class MpkController {
         model.addAttribute("chosenBuilding", building);
         model.addAttribute("newProject", newProject);
         model.addAttribute("serviceTypeList", serviceTypeList);
+        //opcja data
+        LocalDateTime currentDate = LocalDateTime.now();
+        String currDate = currentDate.getYear() +String.valueOf(currentDate.getMonth());
+        model.addAttribute("currentDate",currDate);
         return "/mpk/generateMPK";
     }
 
@@ -42,15 +47,6 @@ public class MpkController {
         newProject.setBuilding(building);
         //pobieramy ostatni numer projektu na tym budynku i ustawiamy na tej podstawie nowy dodając "1"
         int currentProjectNr = projectService.getCurrentProjectNum(building);
-       /* List<Project> projectsForThisBuilding = building.getProjects();
-        projectsForThisBuilding.sort(new Comparator<Project>() {
-            @Override
-            public int compare(Project o1, Project o2) {
-                return Integer.compare(o1.getNr_project(),o2.getNr_project());
-            }
-        });
-        int lastProjectNr = projectsForThisBuilding.get(projectsForThisBuilding.size()-1).getNr_project();
-        int currentProjectNr = lastProjectNr+1;*/
         newProject.setProjectNum(currentProjectNr);
         projectService.save(newProject);
 

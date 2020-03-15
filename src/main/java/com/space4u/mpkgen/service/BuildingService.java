@@ -13,4 +13,5 @@ public interface BuildingService {
     void save(Building building);
     int getLastBuildingNum();
     Building getLastBuilding();
+    List<Building> onlyOfferBuildings();
 }

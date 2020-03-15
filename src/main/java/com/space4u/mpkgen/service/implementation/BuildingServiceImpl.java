@@ -6,6 +6,7 @@ import com.space4u.mpkgen.service.BuildingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -50,5 +51,16 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public Building getLastBuilding() {
         return buildingRepository.findTopByOrderByIdDesc();
+    }
+
+    //lista, w której są budynki, dla których instnieje tylko projekt ofertowy
+    //potrzebny przy edytuj/usuń budynek
+    @Override
+    public List<Building> onlyOfferBuildings() {
+        List<Building> buildings = new ArrayList<>();
+        for (Building b: findAll()) {
+            if (b.getProjects().size() == 1)
+                buildings.add(b); }
+        return buildings;
     }
 }

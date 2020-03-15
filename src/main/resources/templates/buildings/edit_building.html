@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Edit building</title>
+</head>
+<body>
+<div align="center">
+    <h1>Edytuj budynek</h1>
+    <br />
+    <form action="#" th:action="@{/buildings/saveEditedBuilding}" th:object="${building}"
+          method="post">
+
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Id budynku:</td>
+                <td><input type="text" th:field="*{id}" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td>Nazwa:</td>
+                <td><input type="text" th:field="*{name}" /></td>
+            </tr>
+            <tr>
+                <td>Adres:</td>
+                <td><input type="text" th:field="*{address}" /></td>
+            </tr>
+            <tr>
+                <td>Właściciel:</td>
+                <td><input type="text" th:field="*{owner}" /></td>
+            </tr>
+            <tr>
+                <td>Numer budynku (tylko do odczytu):</td>
+                <td><input type="text" th:field="*{buildingNum}" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Zapisz</button> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

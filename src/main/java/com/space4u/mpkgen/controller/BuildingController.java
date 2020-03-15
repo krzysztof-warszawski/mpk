@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Comparator;
 import java.util.List;
@@ -64,10 +65,35 @@ public class BuildingController {
     }
 
     @GetMapping("/buildingsList")
-    public String showAllBuildings(Model model){
-        List<Building> buildings = buildingService.findAll();
+    public String showOnlyOffersBuildings(Model model){
+        List<Building> buildings = buildingService.onlyOfferBuildings();
         buildings.sort(Comparator.comparing(building -> building.getName()));
         model.addAttribute(buildings);
         return "/buildings/list-buildings";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam(name = "id") int id) {
+        //na podstawie id budynku pobieram id projektu ofertowego i go usuwam
+        Building building = buildingService.getBuildingById(id);
+        List<Project> projectsOnBuilding = building.getProjects();
+        int idProject = projectsOnBuilding.get(0).getId();
+        projectService.deleteProjectById(idProject);
+        buildingService.deleteBuildingById(id);
+        return "redirect:/buildings/buildingsList";
+    }
+
+    @GetMapping("/edit")
+    public ModelAndView showEditBuildingPage(@RequestParam(name = "id") int id) {
+        ModelAndView mav = new ModelAndView("/buildings/edit_building");
+        Building building = buildingService.getBuildingById(id);
+        mav.addObject("building", building);
+        return mav;
+    }
+
+    @RequestMapping(value="/saveEditedBuilding", method= RequestMethod.POST)
+    public String saveEditedBuilding(@ModelAttribute("building") Building building){ ;
+        buildingService.save(building);
+        return "redirect:/buildings/buildingsList";
     }
 }
