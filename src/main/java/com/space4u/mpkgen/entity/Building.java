@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "building")
 @Slf4j
 @Getter
 @Setter

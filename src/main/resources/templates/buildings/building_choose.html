@@ -15,7 +15,7 @@
     <div class="col-lg-3">
         <form action="#" th:action="@{/buildings/chooseBuilding}"  method="GET">
             <select class="form-control" id="buildingId" name="buildingId">
-                <option value="">Wybierz budynek z listy</option>
+                <option value="0">Wybierz budynek z listy</option>
                 <option th:each="b : ${buildings}"
                         th:value="${b.id}"
                         th:text="${b.name} + ' ' + ${b.owner}"></option>

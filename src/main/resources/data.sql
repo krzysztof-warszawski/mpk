@@ -1,4 +1,4 @@
-INSERT INTO `mpks4u`.`service_type` (`id`, `name`)
+INSERT INTO `xniP42gzRW`.`service_type` (`id`, `name`)
 VALUES ('0', 'Kalkulacja kosztowa'),
        ('1', 'Konsultacje techniczne'),
        ('2', 'Audyt techniczny / Due diligence'),
@@ -7,7 +7,7 @@ VALUES ('0', 'Kalkulacja kosztowa'),
        ('5', 'Realizacja'),
        ('6', 'Gwarancja');
 
-INSERT INTO `mpks4u`.`building` (`id`, `address`, `name`, `building_num`, `owner`)
+INSERT INTO `xniP42gzRW`.`building` (`id`, `address`, `name`, `building_num`, `owner`)
 VALUES ('11', 'Łódz ul. Wólczańska 178', 'University Business Park', '11','GTC'),
        ('12', ' Warszawa ul. Postępu 21 ', 'Park Postępu', '12','IMMOFINANZ'),
         ('13',' Warszawa ul. Stanisława Augusta','Apartamenty Króla Stasia','13',' LEOSET'),
@@ -58,7 +58,7 @@ VALUES ('11', 'Łódz ul. Wólczańska 178', 'University Business Park', '11','G
          ('58','','CISCO_Warsaw_GC_RFP','58',''),
          ('59','','Oxygen Park','59',' SPIE');
 
-INSERT INTO `mpks4u`.`project`
+INSERT INTO `xniP42gzRW`.`project`
 (`id`,
  `date`,
  `floor`,

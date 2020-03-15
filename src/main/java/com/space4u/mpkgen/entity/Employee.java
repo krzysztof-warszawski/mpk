@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "employee")
 @Slf4j
 @Getter
 @Setter
