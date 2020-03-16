@@ -1,29 +1,30 @@
 package com.space4u.mpkgen.config;
 
+import com.space4u.mpkgen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import javax.sql.DataSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+//@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    @Qualifier("securityDataSource")
-    private DataSource securityDataSource;
+    private UserService userService;
+
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        // use jdbc authentication ...
-        auth.jdbcAuthentication().dataSource(securityDataSource);
-
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Override
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .antMatchers("/employees/showForm*").hasAnyRole("MANAGER", "ADMIN")
 //                .antMatchers("/employees/save*").hasAnyRole("MANAGER", "ADMIN")
-//                .antMatchers("/employees/**").hasRole("EMPLOYEE")
+                .antMatchers("/users/**").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers("/projects/delete").hasRole("ADMIN")
                 .antMatchers("/projects/edit").hasRole("MANAGER")
                 .antMatchers("/projects/saveEditedProject").hasRole("MANAGER")
@@ -42,13 +43,64 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin()
-                    .loginPage("/loginForm")
-                    .loginProcessingUrl("/authenticateTheUser")
-                    .permitAll()
+                .loginPage("/loginForm")
+                .loginProcessingUrl("/authenticateTheUser")
+                .successHandler(customAuthenticationSuccessHandler)
+                .permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/access-denied");
-
     }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    //    @Autowired
+//    @Qualifier("securityDataSource")
+//    private DataSource securityDataSource;
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//
+//        // use jdbc authentication ...
+//        auth.jdbcAuthentication().dataSource(securityDataSource);
+//
+//    }
+//
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//
+//        http.authorizeRequests()
+////                .antMatchers("/employees/showForm*").hasAnyRole("MANAGER", "ADMIN")
+////                .antMatchers("/employees/save*").hasAnyRole("MANAGER", "ADMIN")
+////                .antMatchers("/employees/**").hasRole("EMPLOYEE")
+//                .antMatchers("/projects/delete").hasRole("ADMIN")
+//                .antMatchers("/projects/edit").hasRole("MANAGER")
+//                .antMatchers("/projects/saveEditedProject").hasRole("MANAGER")
+//                .antMatchers("/projects/**").hasRole("EMPLOYEE")
+//                .antMatchers("/buildings/**").hasRole("EMPLOYEE")
+//                .antMatchers("/mpk/**").hasRole("EMPLOYEE")
+//                .antMatchers("/resources/**").permitAll()
+//                .and()
+//                .formLogin()
+//                    .loginPage("/loginForm")
+//                    .loginProcessingUrl("/authenticateTheUser")
+//                    .permitAll()
+//                .and()
+//                .logout().permitAll()
+//                .and()
+//                .exceptionHandling().accessDeniedPage("/access-denied");
+//
+//    }
 }

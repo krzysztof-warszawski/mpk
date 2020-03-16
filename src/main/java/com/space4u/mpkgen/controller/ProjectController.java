@@ -8,14 +8,12 @@ import com.space4u.mpkgen.service.BuildingService;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import com.space4u.mpkgen.util.ExcelView;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -29,8 +27,6 @@ public class ProjectController {
     @Autowired
     private BuildingService buildingService;
     private int projectId;
-//    private EmployeeService employeeService;
-
 
     @GetMapping("/list")
     public String listMpk(Model model) {
@@ -39,29 +35,11 @@ public class ProjectController {
         return "/projects/list-projects";
     }
 
-//    @GetMapping("/edit")
-//    public ModelAndView showEditProjectPage(@RequestParam(name="id") int id, Model model){
-//        ModelAndView mav = new ModelAndView("projects/edit_project");
-//        Project project = projectService.getProjectById(id);
-//        mav.addObject("project", project);
-//        model.addAttribute("serviceTypeList", serviceTypeService.findAll());
-//        return mav;
-//    }
-
     @GetMapping("/edit")
     public String showEditProjectPage(@RequestParam(name="id") int id, Model model){
         Project project = projectService.getProjectById(id);
         AddProjectRequest addProjectRequest = new AddProjectRequest();
-        /*addProjectRequest.setBuildingId(project.getBuilding().getId());
-        addProjectRequest.setDate(project.getDate());
-        addProjectRequest.setFloor(project.getFloor());
-        addProjectRequest.setMpk(project.getMpk());
-        addProjectRequest.setProjectNum(project.getProjectNum());
-        addProjectRequest.setServiceTypeId(project.getServiceType().getId());
-        addProjectRequest.setShortDescription(project.getShortDescription());
-        addProjectRequest.setTenant(project.getTenant());
-        addProjectRequest.setId(project.getId());*/
-        projectService.setParameters(addProjectRequest,project);
+        projectService.setParameters(addProjectRequest, project);
         List<Building> buildingList = buildingService.findAll();
         List<ServiceType> serviceTypeList = serviceTypeService.findAll();
         projectId = id;
@@ -84,7 +62,7 @@ public class ProjectController {
         int currentProjectNr = projectService.getCurrentProjectNum(building);
         if(!oldBuilding.equals(building)){
             editedProject.setProjectNum(currentProjectNr);}
-        //projectService.save(project);
+//        projectService.save(project);
         int currentBuildingNr = building.getBuildingNum();
         StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr,editedProject.getProjectNum());
         MPK.append(serviceType.getId());

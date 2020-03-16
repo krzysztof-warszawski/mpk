@@ -23,6 +23,7 @@
     <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
     <a id ="editDeleteProjectsButton" href="/projects/editableProjects" class = "btn btn-primary btn-sm" >Edytuj/usuń projekt</a>
     <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
+    <a th:href="@{/users/showNewUserForm}" class="btn btn-primary" role="button" aria-pressed="true">Dodaj użytkownika</a>
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"
           method="POST">

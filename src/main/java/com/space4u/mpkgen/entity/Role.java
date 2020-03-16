@@ -9,20 +9,23 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "role")
 @Slf4j
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Employee {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String name;
 
+    public Role() { }
+
+    public Role(String name) {
+        this.name = name;
+    }
 }
