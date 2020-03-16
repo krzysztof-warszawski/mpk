@@ -1,14 +1,158 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Registration Form</title>
+
+    <title>Nowy użytkownik</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Reference Bootstrap files -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link th:href="@{../css/styles.css}" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .error {color:red}
+    </style>
+
 </head>
+
 <body>
 
-<a id = "backButton" th:href="@{/projects/list}" class = "btn btn-primary btn-sm" >Wróć do listy wszystkich projektów</a>
+<div>
 
-Formularz w drodze ;)
+    <div id="loginbox" style="margin-top: 50px;"
+         class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+                <div class="panel-title">Nowy użytkownik</div>
+            </div>
+
+            <div style="padding-top: 30px" class="panel-body">
+
+                <!-- Registration Form -->
+                <form th:action="@{/users/processNewUserRegistration}"
+                      th:object="${crmUser}" method="POST"
+                      class="form-horizontal">
+
+                    <!-- Place for messages: error, alert etc ... -->
+                    <div class="form-group">
+                        <div class="col-xs-15">
+                            <div>
+
+                                <!-- Check for registration error -->
+                                <div th:if="${registrationError}" class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                    <span th:text="${registrationError}"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User name -->
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" th:field="*{userName}" placeholder="login (*)" class="form-control" />
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('userName')}"
+                         style="margin-bottom: 25px" class="text-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('userName')}" th:text="'Login ' + ${err}" />
+                        </ul>
+                    </div>
+
+
+                    <!-- Password -->
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input type="password" th:field="*{password}" placeholder="hasło (*)" class="form-control" th:errorclass="fieldError" />
+                    </div>
+                    <div th:if="${#fields.hasErrors('password')}"
+                         style="margin-bottom: 25px" class="text-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('password')}" th:text="'Hasło ' + ${err}" />
+                        </ul>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input type="password" th:field="*{matchingPassword}" placeholder="potwierdź hasło (*)" class="form-control" th:errorclass="fieldError" />
+                    </div>
+                    <div th:if="${#fields.hasErrors('matchingPassword')}"
+                         style="margin-bottom: 25px" class="text-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('matchingPassword')}" th:text="'Potwierdź hasło ' + ${err}" />
+                        </ul>
+                    </div>
+
+
+                    <!-- First name -->
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" th:field="*{firstName}" placeholder="imię (*)" class="form-control" th:errorclass="fieldError" />
+                    </div>
+                    <div th:if="${#fields.hasErrors('firstName')}"
+                         style="margin-bottom: 25px" class="text-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('firstName')}" th:text="'Imię ' + ${err}" />
+                        </ul>
+                    </div>
+
+                    <!-- Last name -->
+                    <div style="margin-bottom: 25px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" th:field="*{lastName}" placeholder="nazwisko (*)" class="form-control" th:errorclass="fieldError" />
+                    </div>
+                    <div th:if="${#fields.hasErrors('lastName')}"
+                         style="margin-bottom: 25px" class="text-danger">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('lastName')}" th:text="'Nazwisko ' + ${err}" />
+                        </ul>
+                    </div>
+
+                    <!-- Email -->
+<!--                    <div style="margin-bottom: 25px" class="input-group">-->
+<!--                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
+<!--                        <input type="text" th:field="*{email}" placeholder="email (*)" class="form-control" th:errorclass="fieldError" />-->
+<!--                    </div>-->
+<!--                    <div th:if="${#fields.hasErrors('email')}"-->
+<!--                         style="margin-bottom: 25px" class="text-danger">-->
+<!--                        <ul>-->
+<!--                            <li th:each="err : ${#fields.errors('email')}" th:text="'Email ' + ${err}" />-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+
+                    <!-- Register Button -->
+                    <div style="margin-top: 10px" class="form-group">
+                        <div class="col-sm-6 controls">
+                            <button type="submit" class="btn btn-primary">Zatwierdź</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+        <div style="text-align: center">
+            <a id = "backButtonToProjects" th:href="@{/projects/list}" class="btn btn-primary" role="button" aria-pressed="true">Wróć do listy wszystkich projektów</a>
+            <a id = "goButtonToUsers" th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>

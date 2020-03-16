@@ -4,8 +4,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
-<!--          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link th:href="@{../css/styles.css}" rel="stylesheet" />
@@ -13,7 +11,7 @@
     <title>MPK generator</title>
 </head>
 
-<body >
+<body>
 
 <div class="divCentered">
     <br>
@@ -23,7 +21,7 @@
     <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
     <a id ="editDeleteProjectsButton" href="/projects/editableProjects" class = "btn btn-primary btn-sm" >Edytuj/usuń projekt</a>
     <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
-    <a th:href="@{/users/showNewUserForm}" class="btn btn-primary" role="button" aria-pressed="true">Dodaj użytkownika</a>
+    <a th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"
           method="POST">

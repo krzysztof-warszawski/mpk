@@ -12,6 +12,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -53,7 +54,7 @@ public class UserController {
         User existing = userService.findByUserName(userName);
         if (existing != null) {
             model.addAttribute("crmUser", new CrmUser());
-            model.addAttribute("registrationError", "User name already exists.");
+            model.addAttribute("registrationError", "Użytkownik o podanym loginie już istnieje.");
 
             logger.warning("User name already exists.");
             return "/users/new-user-form";
@@ -62,5 +63,32 @@ public class UserController {
         userService.save(crmUser);
         logger.info("Successfully created user: " + userName);
         return "/users/new-user-confirmation";
+    }
+
+    @GetMapping("/list")
+    public String listEmployees(Model theModel) {
+
+        // get employees from db
+        List<User> users = userService.findAll();
+
+        // add to the spring model
+        theModel.addAttribute("users", users);
+
+        return "/users/list-users";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("userName") String name,
+                         Model theModel) {
+
+        // delete the employee
+        List<User> users = userService.searchBy(name);
+
+        // add to the spring model
+        theModel.addAttribute("users", users);
+
+        // send to /employees/list
+        return "/users/list-users";
+
     }
 }

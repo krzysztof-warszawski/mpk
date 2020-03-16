@@ -14,23 +14,23 @@ import javax.validation.constraints.Size;
 @Setter
 public class CrmUser {
 
-    @NotNull(message = "pole obowiązkowe")
-    @Size(min = 1, message = "pole obowiązkowe")
+    @NotNull(message = "jest polem obowiązkowym")
+    @Size(min = 1, message = "jest polem obowiązkowym")
     private String userName;
 
-    @NotNull(message = "pole obowiązkowe")
-    @Size(min = 1, message = "pole obowiązkowe")
+    @NotNull(message = "jest polem obowiązkowym")
+    @Size(min = 1, message = "jest polem obowiązkowym")
     private String password;
 
-    @NotNull(message = "pole obowiązkowe")
-    @Size(min = 1, message = "pole obowiązkowe")
+    @NotNull(message = "jest polem obowiązkowym")
+    @Size(min = 1, message = "jest polem obowiązkowym")
     private String matchingPassword;
 
-    @NotNull(message = "pole obowiązkowe")
-    @Size(min = 1, message = "pole obowiązkowe")
+    @NotNull(message = "jest polem obowiązkowym")
+    @Size(min = 1, message = "jest polem obowiązkowym")
     private String firstName;
 
-    @NotNull(message = "pole obowiązkowe")
-    @Size(min = 1, message = "pole obowiązkowe")
+    @NotNull(message = "jest polem obowiązkowym")
+    @Size(min = 1, message = "jest polem obowiązkowym")
     private String lastName;
 }

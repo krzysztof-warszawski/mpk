@@ -32,11 +32,15 @@ public class BuildingController {
 
     @GetMapping("/chooseBuilding")
     public String showBuildingProjectsPage(Model model, @RequestParam("buildingId") int id){
-        Building building = buildingService.getBuildingById(id);
-        List<Project> projectsForBuilding = building.getProjects();
-        model.addAttribute("chosenBuilding", building);
-        model.addAttribute("projectsForBuilding", projectsForBuilding);
-        return "/buildings/building_projects";
+        if (id < 11) {
+            return "redirect:/buildings/building_choose";
+        } else {
+            Building building = buildingService.getBuildingById(id);
+            List<Project> projectsForBuilding = building.getProjects();
+            model.addAttribute("chosenBuilding", building);
+            model.addAttribute("projectsForBuilding", projectsForBuilding);
+            return "/buildings/building_projects";
+        }
     }
 
     @RequestMapping("/addNewBuilding")

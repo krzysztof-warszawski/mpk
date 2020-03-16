@@ -65,42 +65,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
-
-    //    @Autowired
-//    @Qualifier("securityDataSource")
-//    private DataSource securityDataSource;
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//
-//        // use jdbc authentication ...
-//        auth.jdbcAuthentication().dataSource(securityDataSource);
-//
-//    }
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//
-//        http.authorizeRequests()
-////                .antMatchers("/employees/showForm*").hasAnyRole("MANAGER", "ADMIN")
-////                .antMatchers("/employees/save*").hasAnyRole("MANAGER", "ADMIN")
-////                .antMatchers("/employees/**").hasRole("EMPLOYEE")
-//                .antMatchers("/projects/delete").hasRole("ADMIN")
-//                .antMatchers("/projects/edit").hasRole("MANAGER")
-//                .antMatchers("/projects/saveEditedProject").hasRole("MANAGER")
-//                .antMatchers("/projects/**").hasRole("EMPLOYEE")
-//                .antMatchers("/buildings/**").hasRole("EMPLOYEE")
-//                .antMatchers("/mpk/**").hasRole("EMPLOYEE")
-//                .antMatchers("/resources/**").permitAll()
-//                .and()
-//                .formLogin()
-//                    .loginPage("/loginForm")
-//                    .loginProcessingUrl("/authenticateTheUser")
-//                    .permitAll()
-//                .and()
-//                .logout().permitAll()
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/access-denied");
-//
-//    }
 }

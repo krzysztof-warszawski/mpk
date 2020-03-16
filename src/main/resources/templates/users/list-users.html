@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Lista Użytkowników</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Lista Użytkowników</h3>
+    <hr>
+
+<!--    <div>-->
+<!--        User: <span sec:authentication="name"></span>-->
+<!--        <br>-->
+<!--        Role(s): <span sec:authentication="principal.authorities"></span>-->
+<!--        <br><br>-->
+<!--    </div>-->
+
+    <form th:action="@{/users/search}" class="form-inline">
+        <a th:href="@{/users/showNewUserForm}"
+           class="btn btn-primary btn-sm mr-5 mb-3">
+            Dodaj użytkownika
+        </a>
+
+        <input class="form-control  ml-5 mr-sm-2 mb-3" type="search" name="userName" placeholder="imię lub nazwisko" />
+
+        <button class="btn btn-success mb-3" type="submit">Wyszukaj</button>
+    </form>
+
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Login</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempUser : ${users}">
+
+            <td th:text="${tempUser.firstName}" />
+            <td th:text="${tempUser.lastName}" />
+            <td th:text="${tempUser.userName}" />
+
+            <td>
+                <div sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+
+                    <!-- Add "update" button/link -->
+                    <a th:href="@{/users/showFormForUpdate(userId=${tempUser.id})}"
+                       class="btn btn-info btn-sm">
+                        Edytuj
+                    </a>
+
+                </div>
+
+                <!--					<div sec:authorize="hasRole('ROLE_ADMIN')">  -->
+
+                <!-- Add "delete" button/link -->
+                <a th:href="@{/users/delete(userId=${tempUser.id})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">
+                    Usuń
+                </a>
+
+                <!--					</div>					-->
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Add a logout button -->
+    <form action="#" th:action="@{/logout}"
+          method="POST">
+
+        <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
