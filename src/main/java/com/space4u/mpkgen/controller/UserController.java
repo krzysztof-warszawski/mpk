@@ -31,9 +31,24 @@ public class UserController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
+    @GetMapping("/list")
+    public String listEmployees(Model theModel) {
+        List<User> users = userService.findAll();
+        theModel.addAttribute("users", users);
+        return "/users/list-users";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("userName") String name,
+                         Model theModel) {
+
+        List<User> users = userService.searchBy(name);
+        theModel.addAttribute("users", users);
+        return "/users/list-users";
+    }
+
     @GetMapping("/showNewUserForm")
     public String showNewUserForm(Model theModel) {
-
         theModel.addAttribute("crmUser", new CrmUser());
         return "/users/new-user-form";
     }
@@ -65,30 +80,10 @@ public class UserController {
         return "/users/new-user-confirmation";
     }
 
-    @GetMapping("/list")
-    public String listEmployees(Model theModel) {
-
-        // get employees from db
-        List<User> users = userService.findAll();
-
-        // add to the spring model
-        theModel.addAttribute("users", users);
-
-        return "/users/list-users";
-    }
-
-    @GetMapping("/search")
-    public String search(@RequestParam("userName") String name,
-                         Model theModel) {
-
-        // delete the employee
-        List<User> users = userService.searchBy(name);
-
-        // add to the spring model
-        theModel.addAttribute("users", users);
-
-        // send to /employees/list
-        return "/users/list-users";
-
+    @GetMapping("/delete")
+    public String delete(@RequestParam("userId") int id) {
+        userService.findById(id).getRoles().clear();
+        userService.deleteById(id);
+        return "redirect:/users/list";
     }
 }

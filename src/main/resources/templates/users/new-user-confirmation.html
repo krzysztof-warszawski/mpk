@@ -3,6 +3,12 @@
 
 <head>
     <link th:href="@{../css/styles.css}" rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title>Użytkownik dodany</title>
 </head>
 
@@ -12,7 +18,8 @@
 
     <hr>
 <div class="divCentered">
-    <a id = "backButton" th:href="@{/projects/list}" class = "btn btn-primary btn-sm" >Wróć do listy wszystkich projektów</a>
+    <a id = "backiButton" th:href="@{/projects/list}" class = "btn btn-primary btn-sm" >Wróć do listy wszystkich projektów</a>
+    <a id = "goButtonToUsers" th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
 </div>
 
 
