@@ -52,19 +52,18 @@ public class BuildingController {
 
     @RequestMapping(value="/saveBuilding", method= RequestMethod.POST)
     public String saveBuildingAndProject(@ModelAttribute("building") Building building){
-        int buildingNum = buildingService.getLastBuildingNum()+1;
-        building.setBuildingNum(buildingNum);
-        buildingService.save(building);
-        //Building currentBuilding = buildingService.findBuildingByName(building.getName());
-        Building currentBuilding = buildingService.getLastBuilding();
-        String currentBuildingNr = String.valueOf(currentBuilding.getBuildingNum());
-        String MPK;
-        if(currentBuildingNr.length()==2)
-            MPK = "0"+currentBuildingNr+"0000";
-        else
-            MPK=currentBuildingNr+"0000";
-        projectService.createProjectForProposals(MPK,currentBuilding, serviceTypeService);
-
+            int buildingNum = buildingService.getLastBuildingNum() + 1;
+            building.setBuildingNum(buildingNum);
+            buildingService.save(building);
+            Building currentBuilding = buildingService.getLastBuilding();
+            String currentBuildingNr = String.valueOf(currentBuilding.getBuildingNum());
+            String MPK;
+            if (currentBuildingNr.length() == 2)
+                MPK = "0" + currentBuildingNr + "0000";
+            else
+                MPK = currentBuildingNr + "0000";
+            projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
+       
         return "redirect:/projects/list";
     }
 

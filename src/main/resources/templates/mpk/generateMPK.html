@@ -42,7 +42,8 @@
             </tr>
             <tr>
                 <td>Data:</td>
-                <td><input type="text" th:value="${currentDate}" th:field="*{date}" /></td>
+                <td><input type="text" th:name="date"
+                           th:value="${newProject.date != null} ? ${newProject.date} : ${currentDate}"/></td>
             </tr>
             <tr>
                 <td>Piętro:</td>

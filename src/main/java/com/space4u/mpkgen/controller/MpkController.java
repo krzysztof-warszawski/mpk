@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -32,10 +33,10 @@ public class MpkController {
         model.addAttribute("chosenBuilding", building);
         model.addAttribute("newProject", newProject);
         model.addAttribute("serviceTypeList", serviceTypeList);
-        //opcja data
-        LocalDateTime currentDate = LocalDateTime.now();
-        String currDate = currentDate.getYear() +String.valueOf(currentDate.getMonth());
+
+        String currDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
         model.addAttribute("currentDate",currDate);
+
         return "/mpk/generateMPK";
     }
 
