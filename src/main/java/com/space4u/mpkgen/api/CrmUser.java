@@ -8,11 +8,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @FieldMatch.List({
-        @FieldMatch(first = "password", second = "matchingPassword", message = "The password fields must match")
+        @FieldMatch(first = "password", second = "matchingPassword", message = "Hasła nie mogą się różnić")
 })
 @Getter
 @Setter
 public class CrmUser {
+
+    private int userId;
 
     @NotNull(message = "jest polem obowiązkowym")
     @Size(min = 1, message = "jest polem obowiązkowym")
@@ -33,4 +35,9 @@ public class CrmUser {
     @NotNull(message = "jest polem obowiązkowym")
     @Size(min = 1, message = "jest polem obowiązkowym")
     private String lastName;
+
+//    @NotNull(message = "jest polem obowiązkowym")
+//    @Size(min = 1, message = "jest polem obowiązkowym")
+    private String roles;
+
 }

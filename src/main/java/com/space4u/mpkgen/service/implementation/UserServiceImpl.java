@@ -6,6 +6,7 @@ import com.space4u.mpkgen.entity.User;
 import com.space4u.mpkgen.repository.RoleRepository;
 import com.space4u.mpkgen.repository.UserRepository;
 import com.space4u.mpkgen.service.UserService;
+import com.space4u.mpkgen.util.RoleMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,14 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-//@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -34,6 +33,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    public static int sessionUserId;
+
     @Override
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
@@ -41,32 +42,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(CrmUser crmUser) {
-        User user = new User();
+    public void save(CrmUser crmUser, boolean isNewUser) {
+        RoleMappings roleList = RoleMappings.valueOf(RoleMappings.class, crmUser.getRoles());
+        User user;
+        if (isNewUser) {
+            user = new User();
+        } else {
+//            user = userRepository.getOne(crmUser.getUserId());
+            user = findById(crmUser.getUserId());
+        }
         user.setUserName(crmUser.getUserName());
         user.setPassword(passwordEncoder.encode(crmUser.getPassword()));
         user.setFirstName(crmUser.getFirstName());
         user.setLastName(crmUser.getLastName());
-        user.setRoles(Arrays.asList(roleRepository.findRoleByName("ROLE_EMPLOYEE")));
+        user.setRoles(roleList.mappingRoles(roleRepository));
 
         userRepository.save(user);
     }
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(userName);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
-                mapRolesToAuthorities(user.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-    }
-
 
     @Override
     public List<User> findAll() {
@@ -76,7 +68,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(int id) {
         Optional<User> result = userRepository.findById(id);
-
         User user;
 
         if (result.isPresent()) {
@@ -105,5 +96,21 @@ public class UserServiceImpl implements UserService {
         }
 
         return results;
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(userName);
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+        sessionUserId = user.getId();
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+                mapRolesToAuthorities(user.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }

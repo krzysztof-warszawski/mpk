@@ -58,11 +58,11 @@
             <td th:text="${tempUser.lastName}" />
             <td th:text="${tempUser.userName}" />
 
-            <td>
+            <td th:hidden="${tempUser.id == sessionUserId}">
                 <div sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
 
                     <!-- Add "update" button/link -->
-                    <a th:href="@{/users/showFormForUpdate(userId=${tempUser.id})}"
+                    <a th:href="@{/users/showEditUserForm(userId=${tempUser.id})}"
                        class="btn btn-info btn-sm">
                         Edytuj
                     </a>

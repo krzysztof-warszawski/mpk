@@ -29,7 +29,6 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-//    private String email;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
@@ -44,7 +43,6 @@ public class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-//        this.email = email;
     }
 
     public User(String userName, String password, String firstName, String lastName, Collection<Role> roles) {
@@ -52,7 +50,6 @@ public class User {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-//        this.email = email;
         this.roles = roles;
     }
 }

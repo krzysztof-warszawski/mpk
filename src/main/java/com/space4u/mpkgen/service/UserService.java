@@ -11,7 +11,7 @@ public interface UserService extends UserDetailsService {
     List<User> findAll();
     User findByUserName(String userName);
     User findById(int id);
-    void save(CrmUser crmUser);
+    void save(CrmUser crmUser, boolean isNewUser);
     void deleteById(int id);
     List<User> searchBy(String name);
 
