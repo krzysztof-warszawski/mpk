@@ -9,8 +9,10 @@ import com.space4u.mpkgen.service.ServiceTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -41,37 +43,53 @@ public class MpkController {
     }
 
     @RequestMapping(value="/saveMPK", method= RequestMethod.POST)
-    public String saveProjectAndGenerateMPK(@ModelAttribute("newProject") Project newProject, @RequestParam("chosenBuildingId") int buildingId){
-        //pobieramy  budynek na podstawie requestParam
+    public String saveProjectAndGenerateMPK(@ModelAttribute("newProject") @Valid Project newProject,
+                                            BindingResult result,
+                                            @ModelAttribute("chosenBuilding") Building chosenBuilding,
+                                            @RequestParam("chosenBuildingId") int buildingId,
+                                            Model model
+                                            ){
+        List<ServiceType> serviceTypeList = serviceTypeService.findAll();
+        model.addAttribute("serviceTypeList", serviceTypeList);
         Building building = buildingService.getBuildingById(buildingId);
-        //ustawiamy go jako budynek dla nowego projektu
-        newProject.setBuilding(building);
-        //pobieramy ostatni numer projektu na tym budynku i ustawiamy na tej podstawie nowy dodając "1"
-        int currentProjectNr = projectService.getCurrentProjectNum(building);
-        newProject.setProjectNum(currentProjectNr);
-        projectService.save(newProject);
+        model.addAttribute("chosenBuilding", building);
+        if(result.hasErrors()){
+            //model.addAttribute("chosenBuilding", building);
+            return "/mpk/generateMPK";
+        }
+        else {
+            //pobieramy  budynek na podstawie requestParam
 
-        int currentBuildingNr = building.getBuildingNum();
-        StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr,currentProjectNr);
+            //ustawiamy go jako budynek dla nowego projektu
+            newProject.setBuilding(building);
+            //pobieramy ostatni numer projektu na tym budynku i ustawiamy na tej podstawie nowy dodając "1"
+            int currentProjectNr = projectService.getCurrentProjectNum(building);
+            newProject.setProjectNum(currentProjectNr);
+            projectService.save(newProject);
 
-        //pobieramy nowo zachowany projekt i z niego bierzemy typ usługi do wygenerowania MPK
-        Project newProjectForData = projectService.getLastProject();
-        MPK.append(newProjectForData.getServiceType().getId());
-        newProject.setMpk(MPK.toString());
+            int currentBuildingNr = building.getBuildingNum();
+            StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr, currentProjectNr);
 
-        //zapisujemy nasz projekt z powrotem do bazy
-        projectService.save(newProject);
+            //pobieramy nowo zachowany projekt i z niego bierzemy typ usługi do wygenerowania MPK
+            Project newProjectForData = projectService.getLastProject();
+            MPK.append(newProjectForData.getServiceType().getId());
+            newProject.setMpk(MPK.toString());
 
-        //jeżeli IdServType == 5 to trzeba też dać nowy projekt o tych samych parametrach ale idServType = 6 i inne MPK
-        if(newProjectForData.getServiceType().getId() == 5){
-            //ustawiamy MPK dla nowego projektu - usuwamy 5 i zamieniamy na 6
-            MPK.deleteCharAt(MPK.length()-1);
-            MPK.append(6);
-            Project newGuaranteeProject = projectService.createProjectForGuarantee(MPK, newProject, serviceTypeService);
-            projectService.save(newGuaranteeProject);
+            //zapisujemy nasz projekt z powrotem do bazy
+            projectService.save(newProject);
+
+            //jeżeli IdServType == 5 to trzeba też dać nowy projekt o tych samych parametrach ale idServType = 6 i inne MPK
+            if (newProjectForData.getServiceType().getId() == 5) {
+                //ustawiamy MPK dla nowego projektu - usuwamy 5 i zamieniamy na 6
+                MPK.deleteCharAt(MPK.length() - 1);
+                MPK.append(6);
+                Project newGuaranteeProject = projectService.createProjectForGuarantee(MPK, newProject, serviceTypeService);
+                projectService.save(newGuaranteeProject);
+            }
+
+            return "redirect:/projects/list";
         }
 
-        return "redirect:/projects/list";
     }
 
 

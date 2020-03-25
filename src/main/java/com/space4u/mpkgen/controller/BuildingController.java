@@ -8,9 +8,11 @@ import com.space4u.mpkgen.service.ServiceTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,7 +53,11 @@ public class BuildingController {
     }
 
     @RequestMapping(value="/saveBuilding", method= RequestMethod.POST)
-    public String saveBuildingAndProject(@ModelAttribute("building") Building building){
+    public String saveBuildingAndProject(@ModelAttribute("building") @Valid Building building, BindingResult result){
+        if(result.hasErrors()){
+            return "/buildings/new_building";
+        }
+        else {
             int buildingNum = buildingService.getLastBuildingNum() + 1;
             building.setBuildingNum(buildingNum);
             buildingService.save(building);
@@ -63,8 +69,9 @@ public class BuildingController {
             else
                 MPK = currentBuildingNr + "0000";
             projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
-       
-        return "redirect:/projects/list";
+
+            return "redirect:/projects/list";
+        }
     }
 
     @GetMapping("/buildingsList")

@@ -7,6 +7,8 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -24,8 +26,14 @@ public class Building {
     private int id;
     @Column(name = "building_num")
     private int buildingNum;
+    @NotNull(message = "Wprowadź nazwę budynku")
+    @Size(min=1, message="Wprowadź nazwę budynku")
     private String name;
+    @NotNull(message = "Wprowadź adres budynku")
+    @Size(min=1, message="Wprowadź adres budynku")
     private String address;
+    @NotNull(message = "Wprowadź właściciela budynku")
+    @Size(min=1, message="Wprowadź właściciela budynku")
     private String owner;
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)

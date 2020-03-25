@@ -19,7 +19,7 @@
             <tr>
                 <fieldset th:cellpadding="10" vertical-align="middle">
                     <br>
-                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(1).getId()}" />
+                    <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(1).getId()}" th:checked="true" />
                     <label th:for="${serviceTypeList.get(1).getId()}" th:text="${serviceTypeList.get(1).getName()}"></label>
                     <br>
                     <input type="radio" th:field="*{serviceType}" th:value="${serviceTypeList.get(2).getId()}" />
@@ -44,6 +44,7 @@
                 <td>Data:</td>
                 <td><input type="text" th:name="date"
                            th:value="${newProject.date != null} ? ${newProject.date} : ${currentDate}"/></td>
+                <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date Error</td>
             </tr>
             <tr>
                 <td>Piętro:</td>
@@ -52,6 +53,7 @@
             <tr th:rows="3">
                 <td>Krótki opis:</td>
                 <td><input type="text" th:field="*{shortDescription}" /></td>
+                <td th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">Short Description Error</td>
             </tr>
 
             <tr>
