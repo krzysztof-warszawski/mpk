@@ -21,6 +21,7 @@
     <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
     <a id ="editDeleteProjectsButton" href="/projects/editableProjects" class = "btn btn-primary btn-sm" >Edytuj/usuń projekt</a>
     <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
+<!--    <a id ="createFoldersButton" th:href="@{/folders/createFolders}" class = "btn btn-primary btn-sm" >Generuj foldery</a>-->
     <a th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"
@@ -46,6 +47,7 @@
         <th>Krótki opis</th>
         <th>Najemca</th>
         <th>Usługa</th>
+        <th>Foldery</th>
     </tr>
     </thead>
     <tr th:each="oneProject : ${projects}">
@@ -57,25 +59,12 @@
         <td th:text="${oneProject.shortDescription}"/>
         <td th:text="${oneProject.tenant}"/>
         <td th:text="${oneProject.getServiceType().getName()}"/>
-        <!--
-        <td>                    &nbsp;&nbsp;&nbsp;
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-
-                <a th:href="@{/projects/delete(id=${oneProject.id})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="if (!(confirm('Czy na pewno chcesz usunąć ten projekt?'))) return false">
-                    Usuń
-                </a>
-
-            </div>
-
-            <a th:href="@{/projects/edit(id=${oneProject.id})}"
+        <td th:hidden="${oneProject.getServiceType().getId() == 6}">
+            <a th:href="@{/folders/createFolders(id=${oneProject.id})}"
                class="btn btn-info btn-sm">
-                Edytuj
+                Generuj foldery
             </a>
-
         </td>
- -->
     </tr>
 
     </table>

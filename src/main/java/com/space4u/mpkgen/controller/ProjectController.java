@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-//@AllArgsConstructor
 @RequestMapping("/projects")
 public class ProjectController {
     @Autowired
@@ -89,6 +88,5 @@ public class ProjectController {
         model.addAttribute("noOfferProjects",noOfferProjects);
         return "projects/editableProjects";
     }
-
 
 }

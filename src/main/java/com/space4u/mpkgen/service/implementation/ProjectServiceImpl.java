@@ -10,7 +10,6 @@ import com.space4u.mpkgen.repository.ServiceTypeRepository;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import lombok.AllArgsConstructor;
-import org.apache.commons.math3.analysis.function.Add;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,8 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> findAll() {
         List<Project> projectList = projectRepository.findAll();
-        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName())); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
-//        projectList.sort(Comparator.comparing(o -> o.getBuilding().getName()));
+        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName()));
         return projectList;
     }
 
@@ -88,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void createProjectForProposals(String MPK, Building building, ServiceTypeService serviceTypeService) { // tu mamy void <<<<<<<<<<<<<<<<<<<<<<<
+    public void createProjectForProposals(String MPK, Building building, ServiceTypeService serviceTypeService) {
         Project project = new Project();
         project.setMpk(MPK);
         project.setProjectNum(0);
@@ -100,7 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project createProjectForGuarantee(StringBuffer MPK, Project newProject, ServiceTypeService serviceTypeService) { // tu mamy return <<<<<<<<<<<<<<<<<<<<<<<
+    public Project createProjectForGuarantee(StringBuffer MPK, Project newProject, ServiceTypeService serviceTypeService) {
         Project guaranteeProject = new Project();
         guaranteeProject.setProjectNum(newProject.getProjectNum());
         guaranteeProject.setMpk(MPK.toString());

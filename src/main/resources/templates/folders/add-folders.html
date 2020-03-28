@@ -14,28 +14,24 @@
 </div>
 <div align="center" class="divCentered">
 
-    <form action="#" th:action="@{/projects/saveEditedProject}" th:object="${addProjectRequest}"
+    <form action="#" th:action="@{/folders/saveFolders}" th:object="${folderCreator}"
           method="post">
         <table border="0" cellpadding="10">
             <tr>
-                <td>Budynek:</td>
-                <td><select th:field="*{buildingId}" class="form-control" id="controlSelect1" >
-                        <div th:each="building : ${buildingList}">
-                            <option th:value="${building.id}" th:text="${building.name}"/>
-                        </div>
-                    </select></td>
+                <td>Nazwa budynku <br/>(tylko do odczytu):</td>
+                <td><input type="text" th:field="*{buildingName}" readonly="readonly"/></td>
             </tr>
             <tr>
                 <td>Numer budynku <br/>(tylko do odczytu):</td>
-                <td><input type="text" th:field="*{buildingNum}" readonly="readonly"/></td>
+                <td><input type="number" th:field="*{buildingNum}" readonly="readonly"/></td>
             </tr>
             <tr>
                 <td>Najemca:</td>
                 <td><input type="text" th:field="*{tenant}" /></td>
             </tr>
             <tr>
-                <td>Data:</td>
-                <td><input type="text" th:field="*{date}" /></td>
+                <td>Data w formacie "yyyyMM":</td>
+                <td><input th:type="text" th:maxlength="6" th:field="*{date}" /></td>
             </tr>
             <tr>
                 <td>Piętro:</td>
@@ -43,7 +39,7 @@
             </tr>
             <tr>
                 <td colspan="2"><button type="submit"
-                                        class="btn btn-info btn-login btn-building">Zapisz</button> </td>
+                                        class="btn btn-info btn-login btn-building">Generuj</button> </td>
             </tr>
         </table>
     </form>

@@ -4,14 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = {
-//		"com.space4u.mpkgen.config",
-//		"com.space4u.mpkgen.controller",
-//		"com.space4u.mpkgen.entity",
-//		"com.space4u.mpkgen.repository",
-//		"com.space4u.mpkgen.service",
-//		"com.space4u.mpkgen.service.implementation"
-//})
+
+/*
+* ADMIN
+* user: susan
+* pass: fun123
+*/
 public class MpkApplication {
 
 	public static void main(String[] args) {

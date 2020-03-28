@@ -12,26 +12,37 @@ import static org.junit.Assert.assertTrue;
 public class FolderCreatorTest {
 
     private FolderCreator folder;
-    private String projectNum;
-    private String buildingName;
-    private String buildingNum;
-    private String mpk;
-    private String date;
-    private String floor;
-    private String tenant;
+
+    @org.junit.Test
+    public void createOfferFolders() throws IOException {
+        folder = new FolderCreator();
+        folder.setDate("202002");
+        folder.setBuildingNum(34);
+        folder.setBuildingName("Nemo");
+        folder.setFloor("1");
+        folder.setTenant("Coca Cola");
+
+        folder.createOfferFolders();
+
+        String location = folder.getCorePath() + folder.getDate() + "_" + folder.getBuildingNum()
+                + "_" + folder.getBuildingName() + "_" + folder.getFloor() + "_" + folder.getTenant();
+
+        assertTrue(Files.exists(Paths.get(location)));
+    }
 
     @org.junit.Test
     public void createFolders() throws IOException {
         folder = new FolderCreator();
-        folder.setDate("202003");
-        folder.setBuildingNum("24");
-        folder.setBuildingName("BlueSky");
-        folder.setTenant("DELL");
+        folder.setMpk("340042");
+        folder.setDate("202002");
+        folder.setBuildingName("Nemo");
+        folder.setFloor("1");
+        folder.setTenant("Coca Cola");
 
-        folder.createFolders(folder.getDate(),folder.getBuildingNum(),folder.getBuildingName(),folder.getTenant());
+        folder.createFolders();
 
-        String location = folder.getCorePath() + folder.getDate() + "_" + folder.getBuildingNum()
-                + "_" + folder.getBuildingName() + "_" + folder.getTenant();
+        String location = folder.getCorePath() + folder.getMpk() + "_" + folder.getDate() + "_"
+                + folder.getBuildingName() + "_" + folder.getFloor() + "_" + folder.getTenant();
 
         assertTrue(Files.exists(Paths.get(location)));
     }
