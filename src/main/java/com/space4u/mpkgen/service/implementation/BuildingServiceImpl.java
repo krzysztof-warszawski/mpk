@@ -19,7 +19,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> findAll() {
         List<Building> buildingList = buildingRepository.findAll();
-        buildingList.sort(Comparator.comparing(Building::getName));
+        buildingList.sort(Comparator.comparing(Building::getName, String.CASE_INSENSITIVE_ORDER));
         return buildingList;
     }
 

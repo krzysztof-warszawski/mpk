@@ -36,8 +36,9 @@
             <tr>
                 <td>Typ usługi:</td>
                 <td><select th:field="*{serviceTypeId}" class="form-control" id="controlSelect2" >
+                <td th:if="${#fields.hasErrors('serviceTypeId')}" th:errors="*{serviceTypeId}" th:errorclass="fieldError">ServiceType Error</td>
                     <div th:each="serviceType : ${serviceTypeList}">
-                        <option th:value="${serviceType.id}" th:text="${serviceType.name}"/>
+                        <option th:value="${serviceType.id}" th:text="${serviceType.name}" th:selected="${addProjectRequest.serviceTypeId} == ${serviceType.id} ? true : false"/>
                     </div>
                 </select></td>
             </tr>
@@ -56,6 +57,7 @@
             <tr th:rows="3">
                 <td>Krótki opis:</td>
                 <td><input type="text" th:field="*{shortDescription}" /></td>
+                <td th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}" th:errorclass="fieldError">Short Description Error</td>
             </tr>
             <tr>
                 <td colspan="2"><button type="submit"

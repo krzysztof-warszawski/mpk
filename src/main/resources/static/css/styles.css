@@ -2,6 +2,10 @@ body {
     background: rgb(200,200,200);
 }
 
+.fieldError{
+    color: red;
+}
+
 .divCentered {
     margin-left: 50px;
     margin-right: 50px;

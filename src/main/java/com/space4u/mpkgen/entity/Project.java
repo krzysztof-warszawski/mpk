@@ -26,8 +26,6 @@ public class Project {
     @Column(name = "project_num")
     private int projectNum;
     private String tenant;
-    @NotNull(message = "Wprowadź datę")
-    @Size(min=1, message = "Wprowadź datę")
     private String date;
     private String floor;
     @Column(name = "short_description")
@@ -44,6 +42,7 @@ public class Project {
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "service_type_id")
+    @NotNull(message = "Wprowadź typ usługi serwisowej")
     private ServiceType serviceType;
 
 }

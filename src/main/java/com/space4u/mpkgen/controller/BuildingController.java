@@ -102,8 +102,15 @@ public class BuildingController {
     }
 
     @RequestMapping(value="/saveEditedBuilding", method= RequestMethod.POST)
-    public String saveEditedBuilding(@ModelAttribute("building") Building building){ ;
-        buildingService.save(building);
-        return "redirect:/buildings/buildingsList";
+    public String saveEditedBuilding(@ModelAttribute("building") @Valid Building building, BindingResult result,
+                                     Model model){
+        if(result.hasErrors()){
+            model.addAttribute("building", building);
+            return "/buildings/edit_building";
+        }
+        else {
+            buildingService.save(building);
+            return "redirect:/buildings/buildingsList";
+        }
     }
 }

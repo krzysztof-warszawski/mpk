@@ -9,17 +9,24 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class AddProjectRequest {
 
     private int id;
     private int projectNum;
     private String tenant;
+    @NotNull(message = "Wprowadź datę")
+    @Size(min=1, message = "Wprowadź datę")
     private String date;
     private String floor;
+    @NotNull(message = "Wprowadź opis")
+    @Size(min=1, message = "Wprowadź opis")
     private String shortDescription;
     private String mpk;
     private int buildingId;
+    @NotNull(message = "Wprowadź typ usługi serwisowej")
     private int serviceTypeId;
 
     public int getId() {

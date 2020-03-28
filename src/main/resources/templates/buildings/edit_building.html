@@ -22,14 +22,17 @@
             <tr>
                 <td>Nazwa:</td>
                 <td><input type="text" th:field="*{name}" /></td>
+                <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="fieldError">Name Error</td>
             </tr>
             <tr>
                 <td>Adres:</td>
                 <td><input type="text" th:field="*{address}" /></td>
+                <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}" th:errorclass="fieldError">Address Error</td>
             </tr>
             <tr>
                 <td>Właściciel:</td>
                 <td><input type="text" th:field="*{owner}" /></td>
+                <td th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}" th:errorclass="fieldError">Owner Error</td>
             </tr>
             <tr>
                 <td>Numer budynku (tylko do odczytu):</td>
