@@ -69,7 +69,6 @@ public class BuildingController {
             else
                 MPK = currentBuildingNr + "0000";
             projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
-
             return "redirect:/projects/list";
         }
     }
@@ -77,7 +76,7 @@ public class BuildingController {
     @GetMapping("/buildingsList")
     public String showOnlyOffersBuildings(Model model){
         List<Building> buildings = buildingService.onlyOfferBuildings();
-        buildings.sort(Comparator.comparing(building -> building.getName()));
+        buildings.sort(Comparator.comparing(Building::getName));
         model.addAttribute(buildings);
         return "/buildings/list-buildings";
     }

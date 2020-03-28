@@ -1,14 +1,6 @@
 package com.space4u.mpkgen.api.request;
 
-import com.space4u.mpkgen.entity.Building;
-import com.space4u.mpkgen.entity.ServiceType;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 

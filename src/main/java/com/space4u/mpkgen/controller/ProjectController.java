@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-//@AllArgsConstructor
 @RequestMapping("/projects")
 public class ProjectController {
     @Autowired
@@ -121,6 +120,4 @@ public class ProjectController {
         model.addAttribute("addProjectRequest", request);
         return "/projects/edit_project";
     }
-
-
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Foldery</title>
+</head>
+<body>
+<div align="center">
+    <h1>Foldery Ofertowe</h1>
+    <br>
+</div>
+<div align="center" class="divCentered">
+
+    <form action="#" th:action="@{/folders/saveFolders}" th:object="${folderCreator}"
+          method="post">
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Nazwa budynku <br/>(tylko do odczytu):</td>
+                <td><input type="text" th:field="*{buildingName}" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td>Numer budynku <br/>(tylko do odczytu):</td>
+                <td><input type="number" th:field="*{buildingNum}" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <td>Najemca:</td>
+                <td><input type="text" th:field="*{tenant}" /></td>
+            </tr>
+            <tr>
+                <td>Data w formacie "yyyyMM":</td>
+                <td><input th:type="text" th:maxlength="6" th:field="*{date}" /></td>
+            </tr>
+            <tr>
+                <td>Piętro:</td>
+                <td><input type="text" th:field="*{floor}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit"
+                                        class="btn btn-info btn-login btn-building">Generuj</button> </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+</body>
+</html>
