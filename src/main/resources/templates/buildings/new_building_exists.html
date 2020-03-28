@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link th:href="@{../css/styles.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Create new building</title>
+</head>
+<body>
+<div align="center">
+    <h1>Budynek o podanej nazwie już istnieje. Nie można dodać go ponownie</h1>
+    <br />
+    <a id = "createNewBuildingButton" href="/buildings/addNewBuilding" class = "btn btn-primary btn-sm" >Nowy budynek</a>
+    <a id = "backToProjectsButton" href="/projects/list" class = "btn btn-primary btn-sm" >Powrót do listy projektów</a>
+</div>
+
+</body>
+</html>

@@ -59,7 +59,7 @@ public class BuildingServiceImpl implements BuildingService {
     public List<Building> onlyOfferBuildings() {
         List<Building> buildings = new ArrayList<>();
         for (Building b: findAll()) {
-            if (b.getProjects().size() == 1)
+            if (b.getProjects().size() == 1 || b.getProjects().size() == 0)
                 buildings.add(b); }
         return buildings;
     }

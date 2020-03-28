@@ -41,17 +41,14 @@ public class ProjectController {
         projectId = id;
         AddProjectRequest addProjectRequest = new AddProjectRequest();
         return setParametersForEditing(model,addProjectRequest,id);
-        /*Project project = projectService.getProjectById(id);
-        projectService.setParameters(addProjectRequest, project);
-        List<Building> buildingList = buildingService.findAll();
-        List<ServiceType> serviceTypeList = serviceTypeService.findAll();
-        model.addAttribute("buildingList",buildingList);
-        model.addAttribute("serviceTypeList", serviceTypeList);
-        model.addAttribute("addProjectRequest", addProjectRequest);
-        return "/projects/edit_project";*/
     }
 
-
+    @GetMapping("/editableProjects")
+    public String showEditableProjectsPage(Model model){
+        List<Project> projects = projectService.findAll();
+        model.addAttribute("projects",projects);
+        return "projects/editableProjects";
+    }
 
     @PostMapping("/saveEditedProject")
     public String saveEditedProject(@ModelAttribute("addProjectRequest") @Valid AddProjectRequest request, BindingResult result,
@@ -59,18 +56,11 @@ public class ProjectController {
         if(result.hasErrors()){
             //zwraca /projects/editProject
             return setParametersForEditing(model,request,projectId);
-            /*Project project = projectService.getProjectById(projectId);
-            projectService.setParameters(request, project);
-            List<Building> buildingList = buildingService.findAll();
-            List<ServiceType> serviceTypeList = serviceTypeService.findAll();
-            model.addAttribute("buildingList",buildingList);
-            model.addAttribute("serviceTypeList", serviceTypeList);
-            model.addAttribute("addProjectRequest", request);
-            return "/projects/edit_project";*/
         }
         else {
-            //nie powinno być opcji wyboru kalkulacji kosztowej - to powinno się dodawać tylko przy dodawaniu budynku
             //przy edycji nie ma też automatycznej generacji projektu gwarancyjnego
+            // w przypadku wybrania opcji realizacja
+            //następuje wyliczanie nowego MPK
             Project oldProject = projectService.getProjectById(projectId);
             Building oldBuilding = oldProject.getBuilding();
             projectService.updateProject(request, projectId);
@@ -81,7 +71,6 @@ public class ProjectController {
             if (!oldBuilding.equals(building)) {
                 editedProject.setProjectNum(currentProjectNr);
             }
-//        projectService.save(project);
             int currentBuildingNr = building.getBuildingNum();
             StringBuffer MPK = projectService.createMpkNumLastCharacter(currentBuildingNr, editedProject.getProjectNum());
             MPK.append(serviceType.getId());
@@ -103,12 +92,6 @@ public class ProjectController {
         return "redirect:/projects/list";
     }
 
-    @GetMapping("/editableProjects")
-    public String showEditableProjectsPage(Model model){
-        List<Project> noOfferProjects = projectService.projectsOtherThanOffer();
-        model.addAttribute("noOfferProjects",noOfferProjects);
-        return "projects/editableProjects";
-    }
 
     private String setParametersForEditing(Model model, AddProjectRequest request, int projectId){
         Project project = projectService.getProjectById(projectId);

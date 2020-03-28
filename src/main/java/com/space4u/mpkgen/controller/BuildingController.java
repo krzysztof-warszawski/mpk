@@ -58,25 +58,37 @@ public class BuildingController {
             return "/buildings/new_building";
         }
         else {
-            int buildingNum = buildingService.getLastBuildingNum() + 1;
-            building.setBuildingNum(buildingNum);
-            buildingService.save(building);
-            Building currentBuilding = buildingService.getLastBuilding();
-            String currentBuildingNr = String.valueOf(currentBuilding.getBuildingNum());
-            String MPK;
-            if (currentBuildingNr.length() == 2)
-                MPK = "0" + currentBuildingNr + "0000";
-            else
-                MPK = currentBuildingNr + "0000";
-            projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
-            return "redirect:/projects/list";
+            boolean buildingExists=false;
+            for (Building b:buildingService.findAll()
+            ) {
+                if(b.getName().equalsIgnoreCase(building.getName())){
+                    buildingExists = true;
+                }}
+            if(buildingExists){
+                return "/buildings/new_building_exists";
+            }
+            else{
+                int buildingNum = buildingService.getLastBuildingNum() + 1;
+                building.setBuildingNum(buildingNum);
+                buildingService.save(building);
+                Building currentBuilding = buildingService.getLastBuilding();
+                String currentBuildingNr = String.valueOf(currentBuilding.getBuildingNum());
+                String MPK;
+                if (currentBuildingNr.length() == 2)
+                    MPK = "0" + currentBuildingNr + "0000";
+                else
+                    MPK = currentBuildingNr + "0000";
+                projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
+                return "redirect:/projects/list";
+            }
         }
+
     }
 
     @GetMapping("/buildingsList")
     public String showOnlyOffersBuildings(Model model){
         List<Building> buildings = buildingService.onlyOfferBuildings();
-        buildings.sort(Comparator.comparing(Building::getName));
+        buildings.sort(Comparator.comparing(Building::getName, String.CASE_INSENSITIVE_ORDER));
         model.addAttribute(buildings);
         return "/buildings/list-buildings";
     }
@@ -86,8 +98,10 @@ public class BuildingController {
         //na podstawie id budynku pobieram id projektu ofertowego i go usuwam
         Building building = buildingService.getBuildingById(id);
         List<Project> projectsOnBuilding = building.getProjects();
-        int idProject = projectsOnBuilding.get(0).getId();
-        projectService.deleteProjectById(idProject);
+        if(projectsOnBuilding.size()>0) {
+            int idProject = projectsOnBuilding.get(0).getId();
+            projectService.deleteProjectById(idProject);
+        }
         buildingService.deleteBuildingById(id);
         return "redirect:/buildings/buildingsList";
     }

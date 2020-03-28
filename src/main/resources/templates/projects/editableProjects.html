@@ -47,7 +47,7 @@
         <th>Edytuj/Usuń Projekt</th>
     </tr>
     </thead>
-    <tr th:each="oneProject : ${noOfferProjects}">
+    <tr th:each="oneProject : ${projects}">
         <td th:text="${oneProject.getBuilding().getName()}"/>
         <td th:text="${oneProject.date}"/>
         <td th:text="${oneProject.floor}"/>
