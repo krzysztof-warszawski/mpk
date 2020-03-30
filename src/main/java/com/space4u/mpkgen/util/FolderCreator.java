@@ -1,5 +1,6 @@
 package com.space4u.mpkgen.util;
 
+import com.space4u.mpkgen.util.mappings.MpkMappings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import java.nio.file.Paths;
 @Setter
 public class FolderCreator {
 
-    private final String corePath = "/Users/kavit/Desktop/Space4u/";
+    private final String corePath = MpkMappings.CORE_PATH;
     private String projectNum;
     private String buildingName;
     private Integer buildingNum;

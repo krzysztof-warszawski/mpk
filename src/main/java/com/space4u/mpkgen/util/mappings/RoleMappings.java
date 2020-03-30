@@ -1,4 +1,4 @@
-package com.space4u.mpkgen.util;
+package com.space4u.mpkgen.util.mappings;
 
 import com.space4u.mpkgen.entity.Role;
 import com.space4u.mpkgen.repository.RoleRepository;

@@ -8,6 +8,8 @@ import com.space4u.mpkgen.service.BuildingService;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
 import com.space4u.mpkgen.util.ExcelView;
+import com.space4u.mpkgen.util.mappings.MpkMappings;
+import com.space4u.mpkgen.util.mappings.NavMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping(NavMappings.PROJECTS)
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
@@ -29,28 +31,28 @@ public class ProjectController {
     private BuildingService buildingService;
     private int projectId;
 
-    @GetMapping("/list")
+    @GetMapping(NavMappings.PROJECTS_LIST)
     public String listMpk(Model model) {
         model.addAttribute("projects", projectService.findAll());
 
-        return "/projects/list-projects";
+        return MpkMappings.PROJECT_LIST;
     }
 
-    @GetMapping("/edit")
+    @GetMapping(NavMappings.PROJECTS_EDIT)
     public String showEditProjectPage(@RequestParam(name="id") int id, Model model){
         projectId = id;
         AddProjectRequest addProjectRequest = new AddProjectRequest();
         return setParametersForEditing(model,addProjectRequest,id);
     }
 
-    @GetMapping("/editableProjects")
+    @GetMapping(NavMappings.PROJECTS_EDITABLE)
     public String showEditableProjectsPage(Model model){
         List<Project> projects = projectService.findAll();
         model.addAttribute("projects",projects);
-        return "projects/editableProjects";
+        return MpkMappings.PROJECT_EDITABLE;
     }
 
-    @PostMapping("/saveEditedProject")
+    @PostMapping(NavMappings.PROJECTS_SAVE_EDITED)
     public String saveEditedProject(@ModelAttribute("addProjectRequest") @Valid AddProjectRequest request, BindingResult result,
                                     Model model){
         if(result.hasErrors()){
@@ -76,20 +78,20 @@ public class ProjectController {
             MPK.append(serviceType.getId());
             editedProject.setMpk(MPK.toString());
             projectService.save(editedProject);
-            return "redirect:/projects/list";
+            return "redirect:" + NavMappings.PROJECTS + NavMappings.PROJECTS_LIST;
         }
     }
 
-    @GetMapping("/downloadExcel")
+    @GetMapping(NavMappings.PROJECTS_DOWNLOAD_EXCEL)
     public ModelAndView downloadExcel(Model model){
         model.addAttribute("projects", projectService.findAll());
         return new ModelAndView(new ExcelView(), "projects", projectService.findAll());
     }
 
-    @GetMapping("/delete")
+    @GetMapping(NavMappings.PROJECTS_DELETE)
     public String delete(@RequestParam(name = "id") int id) {
         projectService.deleteProjectById(id);
-        return "redirect:/projects/list";
+        return "redirect:" + NavMappings.PROJECTS + NavMappings.PROJECTS_LIST;
     }
 
 
@@ -101,6 +103,6 @@ public class ProjectController {
         model.addAttribute("buildingList",buildingList);
         model.addAttribute("serviceTypeList", serviceTypeList);
         model.addAttribute("addProjectRequest", request);
-        return "/projects/edit_project";
+        return MpkMappings.PROJECT_EDIT;
     }
 }

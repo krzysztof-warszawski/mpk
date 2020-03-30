@@ -4,7 +4,9 @@ import com.space4u.mpkgen.api.CrmUser;
 import com.space4u.mpkgen.entity.User;
 import com.space4u.mpkgen.service.UserService;
 import com.space4u.mpkgen.service.implementation.UserServiceImpl;
-import com.space4u.mpkgen.util.RoleMappings;
+import com.space4u.mpkgen.util.mappings.MpkMappings;
+import com.space4u.mpkgen.util.mappings.NavMappings;
+import com.space4u.mpkgen.util.mappings.RoleMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping(NavMappings.USERS)
 public class UserController {
 
     @Autowired
@@ -33,32 +35,32 @@ public class UserController {
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-    @GetMapping("/list")
+    @GetMapping(NavMappings.USERS_LIST)
     public String listEmployees(Model theModel) {
         List<User> users = userService.findAll();
         theModel.addAttribute("users", users);
         theModel.addAttribute("sessionUserId", UserServiceImpl.sessionUserId);
         System.out.println("Session User ID==" + UserServiceImpl.sessionUserId);
-        return "/users/list-users";
+        return MpkMappings.USERS_LIST;
     }
 
-    @GetMapping("/search")
+    @GetMapping(NavMappings.USERS_SEARCH)
     public String search(@RequestParam("userName") String name,
                          Model theModel) {
 
         List<User> users = userService.searchBy(name);
         theModel.addAttribute("users", users);
         theModel.addAttribute("sessionUserId", UserServiceImpl.sessionUserId);
-        return "/users/list-users";
+        return MpkMappings.USERS_LIST;
     }
 
-    @GetMapping("/showNewUserForm")
+    @GetMapping(NavMappings.USERS_NEW_USER_FORM)
     public String showNewUserForm(Model model) {
         model.addAttribute("crmUser", new CrmUser());
-        return "/users/new-user-form";
+        return MpkMappings.USERS_NEW_USER_FORM;
     }
 
-    @PostMapping("/processNewUserRegistration")
+    @PostMapping(NavMappings.USERS_PROCESS_NEW_USER_REGISTRATION)
     public String processNewUserRegistration(
             @Valid @ModelAttribute("crmUser") CrmUser crmUser,
             BindingResult bindingResult,
@@ -68,7 +70,7 @@ public class UserController {
         logger.info("Processing new-user-form for: " + userName);
 
         if (bindingResult.hasErrors()) {
-            return "/users/new-user-form";
+            return MpkMappings.USERS_NEW_USER_FORM;
         }
 
         User existing = userService.findByUserName(userName);
@@ -77,17 +79,16 @@ public class UserController {
             model.addAttribute("registrationError", "Użytkownik o podanym loginie już istnieje.");
 
             logger.warning("User name already exists.");
-            return "/users/new-user-form";
+            return MpkMappings.USERS_NEW_USER_FORM;
         }
 
         userService.save(crmUser, true);
         logger.info("Successfully created user: " + userName);
-        return "/users/new-user-confirmation";
+        return MpkMappings.USERS_NEW_USER_CONFIRMATION;
     }
 
-    @GetMapping("/showEditUserForm")
+    @GetMapping(NavMappings.USERS_EDIT_USER_FORM)
     public String showUpdateUserForm(@RequestParam("userId") int id, Model model) {
-
         User user = userService.findById(id);
         String role = RoleMappings.findRoleName(user.getRoles().size());
 
@@ -99,10 +100,10 @@ public class UserController {
         crmUser.setRoles(role);
         model.addAttribute("crmUser", crmUser);
 
-        return "/users/update-user-form";
+        return MpkMappings.USERS_UPDATE;
     }
 
-    @PostMapping("/processUserUpdate")
+    @PostMapping(NavMappings.USERS_PROCESS_USER_UPDATE)
     public String processUserUpdate(
             @Valid @ModelAttribute("crmUser") CrmUser crmUser,
             BindingResult bindingResult,
@@ -113,7 +114,7 @@ public class UserController {
 
         if (bindingResult.hasErrors()) {
             logger.info("has errors >>>>>>>>>>>>");
-            return "/users/update-user-form";
+            return MpkMappings.USERS_UPDATE;
         }
 
         User existing = userService.findById(crmUser.getUserId());
@@ -124,19 +125,19 @@ public class UserController {
                 model.addAttribute("registrationError", "Inny użytkownik o podanym loginie już istnieje.");
 
                 logger.warning("User name already assign to another user.");
-                return "/users/update-user-form";
+                return MpkMappings.USERS_UPDATE;
             }
         }
 
         userService.save(crmUser, false);
         logger.info("Successfully created user: " + userName);
-        return "/users/new-user-confirmation";
+        return MpkMappings.USERS_NEW_USER_CONFIRMATION;
     }
 
-    @GetMapping("/delete")
+    @GetMapping(NavMappings.USERS_DELETE)
     public String delete(@RequestParam("userId") int id) {
         userService.findById(id).getRoles().clear();
         userService.deleteById(id);
-        return "redirect:/users/list";
+        return "redirect:" + NavMappings.USERS + NavMappings.USERS_LIST;
     }
 }

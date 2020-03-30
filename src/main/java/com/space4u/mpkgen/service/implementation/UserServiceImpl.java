@@ -6,7 +6,7 @@ import com.space4u.mpkgen.entity.User;
 import com.space4u.mpkgen.repository.RoleRepository;
 import com.space4u.mpkgen.repository.UserRepository;
 import com.space4u.mpkgen.service.UserService;
-import com.space4u.mpkgen.util.RoleMappings;
+import com.space4u.mpkgen.util.mappings.RoleMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

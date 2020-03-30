@@ -5,6 +5,8 @@ import com.space4u.mpkgen.entity.Project;
 import com.space4u.mpkgen.service.BuildingService;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
+import com.space4u.mpkgen.util.mappings.MpkMappings;
+import com.space4u.mpkgen.util.mappings.NavMappings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,54 +20,55 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/buildings")
+@RequestMapping(NavMappings.BUILDINGS)
 public class BuildingController {
 
     private BuildingService buildingService;
     private ProjectService projectService;
     private ServiceTypeService serviceTypeService;
 
-    @RequestMapping("/building_choose")
+    @RequestMapping(NavMappings.BUILDINGS_CHOOSE)
     public String viewBuildingListPage(Model model){
         List<Building> buildingList = buildingService.findAll();
         model.addAttribute("buildings", buildingList);
-        return "/buildings/building_choose";
+        return MpkMappings.BUILDING_CHOOSE;
     }
 
-    @GetMapping("/chooseBuilding")
+    @GetMapping(NavMappings.BUILDINGS_CHOOSE_ONE)
     public String showBuildingProjectsPage(Model model, @RequestParam("buildingId") int id){
         if (id < 11) {
-            return "redirect:/buildings/building_choose";
+            return "redirect:" + MpkMappings.BUILDING_CHOOSE;
         } else {
             Building building = buildingService.getBuildingById(id);
             List<Project> projectsForBuilding = building.getProjects();
             model.addAttribute("chosenBuilding", building);
             model.addAttribute("projectsForBuilding", projectsForBuilding);
-            return "/buildings/building_projects";
+            return MpkMappings.BUILDING_PROJECTS;
         }
     }
 
-    @RequestMapping("/addNewBuilding")
+    @RequestMapping(NavMappings.BUILDINGS_NEW)
     public String showNewBuildingPage(Model model){
         Building building = new Building();
         model.addAttribute("building", building);
-        return "/buildings/new_building";
+        return MpkMappings.BUILDING_NEW;
     }
 
-    @RequestMapping(value="/saveBuilding", method= RequestMethod.POST)
+    @RequestMapping(value=NavMappings.BUILDINGS_SAVE, method= RequestMethod.POST)
     public String saveBuildingAndProject(@ModelAttribute("building") @Valid Building building, BindingResult result){
         if(result.hasErrors()){
-            return "/buildings/new_building";
+            return MpkMappings.BUILDING_NEW;
         }
         else {
             boolean buildingExists=false;
+            //sprawdzanie czy budynek o danej nazwie już istnieje w bazie
             for (Building b:buildingService.findAll()
             ) {
                 if(b.getName().equalsIgnoreCase(building.getName())){
                     buildingExists = true;
                 }}
             if(buildingExists){
-                return "/buildings/new_building_exists";
+                return MpkMappings.BUILDING_NEW_EXISTS;
             }
             else{
                 int buildingNum = buildingService.getLastBuildingNum() + 1;
@@ -79,21 +82,20 @@ public class BuildingController {
                 else
                     MPK = currentBuildingNr + "0000";
                 projectService.createProjectForProposals(MPK, currentBuilding, serviceTypeService);
-                return "redirect:/projects/list";
+                return "redirect:" + NavMappings.PROJECTS + NavMappings.PROJECTS_LIST;
             }
         }
-
     }
 
-    @GetMapping("/buildingsList")
+    @GetMapping(NavMappings.BUILDINGS_LIST)
     public String showOnlyOffersBuildings(Model model){
         List<Building> buildings = buildingService.onlyOfferBuildings();
         buildings.sort(Comparator.comparing(Building::getName, String.CASE_INSENSITIVE_ORDER));
         model.addAttribute(buildings);
-        return "/buildings/list-buildings";
+        return MpkMappings.BUILDING_LIST;
     }
 
-    @GetMapping("/delete")
+    @GetMapping(NavMappings.BUILDINGS_DELETE)
     public String delete(@RequestParam(name = "id") int id) {
         //na podstawie id budynku pobieram id projektu ofertowego i go usuwam
         Building building = buildingService.getBuildingById(id);
@@ -103,27 +105,27 @@ public class BuildingController {
             projectService.deleteProjectById(idProject);
         }
         buildingService.deleteBuildingById(id);
-        return "redirect:/buildings/buildingsList";
+        return "redirect:" + NavMappings.BUILDINGS + NavMappings.BUILDINGS_LIST;
     }
 
-    @GetMapping("/edit")
+    @GetMapping(NavMappings.BUILDINGS_EDIT)
     public ModelAndView showEditBuildingPage(@RequestParam(name = "id") int id) {
-        ModelAndView mav = new ModelAndView("/buildings/edit_building");
+        ModelAndView mav = new ModelAndView(MpkMappings.BUILDING_EDIT);
         Building building = buildingService.getBuildingById(id);
         mav.addObject("building", building);
         return mav;
     }
 
-    @RequestMapping(value="/saveEditedBuilding", method= RequestMethod.POST)
+    @RequestMapping(value=NavMappings.BUILDINGS_SAVE_EDIT, method= RequestMethod.POST)
     public String saveEditedBuilding(@ModelAttribute("building") @Valid Building building, BindingResult result,
                                      Model model){
         if(result.hasErrors()){
             model.addAttribute("building", building);
-            return "/buildings/edit_building";
+            return MpkMappings.BUILDING_EDIT;
         }
         else {
             buildingService.save(building);
-            return "redirect:/buildings/buildingsList";
+            return "redirect:"+NavMappings.BUILDINGS + NavMappings.BUILDINGS_LIST;
         }
     }
 }

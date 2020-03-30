@@ -6,6 +6,8 @@ import com.space4u.mpkgen.entity.ServiceType;
 import com.space4u.mpkgen.service.BuildingService;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.service.ServiceTypeService;
+import com.space4u.mpkgen.util.mappings.MpkMappings;
+import com.space4u.mpkgen.util.mappings.NavMappings;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/mpk")
+@RequestMapping(NavMappings.MPK)
 public class MpkController {
 
     private ProjectService projectService;
@@ -27,7 +29,7 @@ public class MpkController {
     private ServiceTypeService serviceTypeService;
 
 
-    @GetMapping("/generateMPK")
+    @GetMapping(NavMappings.MPK_GENERATE)
     public String showGenerateMPKPage(Model model, @RequestParam("chosenBuildingId") int id){
         Building building = buildingService.getBuildingById(id);
         List<ServiceType> serviceTypeList = serviceTypeService.findAll();
@@ -39,10 +41,10 @@ public class MpkController {
         String currDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
         model.addAttribute("currentDate",currDate);
 
-        return "/mpk/generateMPK";
+        return MpkMappings.MPK_GENERATE;
     }
 
-    @RequestMapping(value="/saveMPK", method= RequestMethod.POST)
+    @RequestMapping(value=NavMappings.MPK_SAVE, method= RequestMethod.POST)
     public String saveProjectAndGenerateMPK(@ModelAttribute("newProject") @Valid Project newProject,
                                             BindingResult result,
                                             @ModelAttribute("chosenBuilding") Building chosenBuilding,
@@ -55,7 +57,7 @@ public class MpkController {
         model.addAttribute("chosenBuilding", building);
         if(result.hasErrors()){
             //model.addAttribute("chosenBuilding", building);
-            return "/mpk/generateMPK";
+            return MpkMappings.MPK_GENERATE;
         }
         else {
             //pobieramy  budynek na podstawie requestParam
@@ -87,7 +89,7 @@ public class MpkController {
                 projectService.save(newGuaranteeProject);
             }
 
-            return "redirect:/projects/list";
+            return "redirect:" + NavMappings.PROJECTS + NavMappings.PROJECTS_LIST;
         }
 
     }

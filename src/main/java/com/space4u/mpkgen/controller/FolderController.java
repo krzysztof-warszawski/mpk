@@ -3,6 +3,8 @@ package com.space4u.mpkgen.controller;
 import com.space4u.mpkgen.entity.Project;
 import com.space4u.mpkgen.service.ProjectService;
 import com.space4u.mpkgen.util.FolderCreator;
+import com.space4u.mpkgen.util.mappings.MpkMappings;
+import com.space4u.mpkgen.util.mappings.NavMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +15,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-@RequestMapping("/folders")
+@RequestMapping(NavMappings.FOLDERS)
 public class FolderController {
 
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/createFolders")
+    @GetMapping(NavMappings.FOLDERS_CREATE)
     public String createFolders(@RequestParam(name = "id") int projectId, Model model) {
         Project project = projectService.getProjectById(projectId);
         int serviceTypeId = project.getServiceType().getId();
@@ -42,27 +44,27 @@ public class FolderController {
                     folderCreator.createFolders();
                 }
 
-                return "/folders/add-folders-confirmation";
+                return MpkMappings.FOLDERS_ADD_CONFIRMATION;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "/folders/add-folders-rejection";
+            return MpkMappings.FOLDERS_ADD_REJECTION;
         }
 
         String currDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMM"));
         folderCreator.setDate(currDate);
         model.addAttribute("folderCreator", folderCreator);
-        return "/folders/add-folders";
+        return MpkMappings.FOLDERS_ADD;
     }
 
-    @PostMapping("/saveFolders")
+    @PostMapping(NavMappings.FOLDERS_SAVE)
     public String saveFolders(@ModelAttribute(name = "folderCreator") FolderCreator folder) {
         try {
             folder.createOfferFolders();
-            return "/folders/add-folders-confirmation";
+            return MpkMappings.FOLDERS_ADD_CONFIRMATION;
         } catch (IOException e) {
             e.printStackTrace();
-            return "/folders/add-folders-rejection";
+            return MpkMappings.FOLDERS_ADD_REJECTION;
         }
     }
 
