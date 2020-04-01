@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
         if (isNewUser) {
             user = new User();
         } else {
-//            user = userRepository.getOne(crmUser.getUserId());
             user = findById(crmUser.getUserId());
         }
         user.setUserName(crmUser.getUserName());

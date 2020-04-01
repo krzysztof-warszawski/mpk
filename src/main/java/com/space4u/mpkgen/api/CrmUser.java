@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @FieldMatch.List({
-        @FieldMatch(first = "password", second = "matchingPassword", message = "Hasła nie mogą się różnić")
+        @FieldMatch(first = "password", second = "matchingPassword", message = "nie może się różnić")
 })
 @Getter
 @Setter

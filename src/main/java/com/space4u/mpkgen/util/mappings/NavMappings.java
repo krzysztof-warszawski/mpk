@@ -40,6 +40,7 @@ public class NavMappings {
     public static final String USERS_PROCESS_NEW_USER_REGISTRATION = "/processNewUserRegistration";
     public static final String USERS_EDIT_USER_FORM = "/showEditUserForm";
     public static final String USERS_PROCESS_USER_UPDATE = "/processUserUpdate";
+    public static final String USERS_PROFILE = "/showUserProfile";
     public static final String USERS_DELETE = "/delete";
 
     private NavMappings(){}

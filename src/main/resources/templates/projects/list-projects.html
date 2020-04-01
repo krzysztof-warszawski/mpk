@@ -15,6 +15,9 @@
 
 <div class="divCentered">
     <br>
+    <div style="float: right">
+        <a th:href="@{/users/showUserProfile}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Mój profil</a>
+    </div>
     <img class="imgProject" align="center" src="../static/images/space4uProjectList.png"
          th:src="@{/images/space4uProjectList.png}"/>
     <a id = "createNewMPKButton" href="/buildings/building_choose" class = "btn btn-primary btn-sm" >Nowy MPK</a>
@@ -23,6 +26,7 @@
     <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
 <!--    <a id ="createFoldersButton" th:href="@{/folders/createFolders}" class = "btn btn-primary btn-sm" >Generuj foldery</a>-->
     <a th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
+
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"
           method="POST">

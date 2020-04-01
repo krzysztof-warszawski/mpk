@@ -89,17 +89,7 @@ public class UserController {
 
     @GetMapping(NavMappings.USERS_EDIT_USER_FORM)
     public String showUpdateUserForm(@RequestParam("userId") int id, Model model) {
-        User user = userService.findById(id);
-        String role = RoleMappings.findRoleName(user.getRoles().size());
-
-        CrmUser crmUser = new CrmUser();
-        crmUser.setUserId(user.getId());
-        crmUser.setUserName(user.getUserName());
-        crmUser.setFirstName(user.getFirstName());
-        crmUser.setLastName(user.getLastName());
-        crmUser.setRoles(role);
-        model.addAttribute("crmUser", crmUser);
-
+        uploadUserProfile(id, model);
         return MpkMappings.USERS_UPDATE;
     }
 
@@ -134,10 +124,47 @@ public class UserController {
         return MpkMappings.USERS_NEW_USER_CONFIRMATION;
     }
 
+    @GetMapping(NavMappings.USERS_PROFILE)
+    public String showUserProfile(Model model) {
+        uploadUserProfile(UserServiceImpl.sessionUserId, model);
+        return MpkMappings.USERS_PROFILE;
+    }
+
+    @PostMapping("/password-reset")
+    public String passwordReset(
+            @Valid @ModelAttribute("crmUser") CrmUser crmUser,
+            BindingResult bindingResult) {
+
+        String userName = crmUser.getUserName();
+        logger.info("Processing update-user-form for: " + userName);
+
+        if (bindingResult.hasErrors()) {
+            logger.info("has errors >>>>>>>>>>>>");
+            return MpkMappings.USERS_PROFILE;
+        }
+
+        userService.save(crmUser, false);
+        logger.info("Successfully updated user: " + userName);
+        return MpkMappings.USERS_NEW_USER_CONFIRMATION;
+    }
+
     @GetMapping(NavMappings.USERS_DELETE)
     public String delete(@RequestParam("userId") int id) {
         userService.findById(id).getRoles().clear();
         userService.deleteById(id);
         return "redirect:" + NavMappings.USERS + NavMappings.USERS_LIST;
+    }
+
+    private void uploadUserProfile(int id, Model model) {
+        User user = userService.findById(id);
+        String role = RoleMappings.findRoleName(user.getRoles().size());
+
+        CrmUser crmUser = new CrmUser();
+        crmUser.setUserId(user.getId());
+        crmUser.setUserName(user.getUserName());
+        crmUser.setFirstName(user.getFirstName());
+        crmUser.setLastName(user.getLastName());
+        crmUser.setRoles(role);
+        model.addAttribute("crmUser", crmUser);
     }
 }
