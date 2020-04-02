@@ -23,7 +23,7 @@
 
     <form th:action="@{/users/search}" class="form-inline">
         <a th:href="@{/users/showNewUserForm}"
-           class="btn btn-primary btn-sm mr-5 mb-3">
+           class="btn btn-primary btn-sm mr-5 mb-3" sec:authorize="hasRole('ROLE_ADMIN')">
             Dodaj użytkownika
         </a>
 
@@ -52,22 +52,23 @@
             <td th:text="${tempUser.userName}" />
 
             <td th:hidden="${tempUser.id == sessionUserId}">
-                <div sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">
+                <div sec:authorize="hasRole('ROLE_ADMIN')" style="display: inline-block">
 
-                    <!-- Add "update" button/link -->
-                    <a th:href="@{/users/showEditUserForm(userId=${tempUser.id})}"
-
-                       class="btn btn-info btn-sm">
+                    <a th:href="@{/users/showEditUserForm(userId=${tempUser.id})}" class="btn btn-info btn-sm">
                         Edytuj
                     </a>
 
-                </div>
+                    <a th:href="@{/users/delete(userId=${tempUser.id})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="if (!(confirm('Czy na pewno chcesz usunąć tego użytkownika?'))) return false">
+                        Usuń
+                    </a>
 
-                <a th:href="@{/users/delete(userId=${tempUser.id})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="if (!(confirm('Are you sure you want to delete this user?'))) return false">
-                    Usuń
-                </a>
+                </div>
+                <div style="display: inline-block">
+                    <a th:href="@{/users/password-reset(userId=${tempUser.id})}" role="button" class="btn btn-info btn-sm"
+                       sec:authorize="hasRole('ROLE_MANAGER')">Reset hasła</a>
+                </div>
 
             </td>
 

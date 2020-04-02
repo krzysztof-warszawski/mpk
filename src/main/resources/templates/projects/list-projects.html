@@ -24,8 +24,8 @@
     <a id ="fetchProjectsButton" href="/projects/downloadExcel" class = "btn btn-primary btn-sm" >Pobierz listę projektów</a>
     <a id ="editDeleteProjectsButton" href="/projects/editableProjects" class = "btn btn-primary btn-sm" >Edytuj/usuń projekt</a>
     <a id ="editDeleteBuildingButton" href="/buildings/buildingsList" class = "btn btn-primary btn-sm" >Edytuj/usuń budynek</a>
-<!--    <a id ="createFoldersButton" th:href="@{/folders/createFolders}" class = "btn btn-primary btn-sm" >Generuj foldery</a>-->
-    <a th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true">Lista użytkowników</a>
+    <a th:href="@{/users/list}" class="btn btn-primary" role="button" aria-pressed="true"
+       sec:authorize="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')">Lista użytkowników</a>
 
     <!-- Add a logout button -->
     <form action="#" th:action="@{/logout}"

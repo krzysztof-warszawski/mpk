@@ -31,6 +31,7 @@ public final class MpkMappings {
     public static final String USERS_NEW_USER_CONFIRMATION = "/users/new-user-confirmation";
     public static final String USERS_UPDATE = "/users/update-user-form";
     public static final String USERS_PROFILE = "/users/user-change-password";
+    public static final String USERS_PASSWORD_RESET = "/users/password-reset";
 
 
     private MpkMappings(){}

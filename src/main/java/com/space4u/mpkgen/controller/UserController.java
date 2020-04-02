@@ -4,6 +4,7 @@ import com.space4u.mpkgen.api.CrmUser;
 import com.space4u.mpkgen.entity.User;
 import com.space4u.mpkgen.service.UserService;
 import com.space4u.mpkgen.service.implementation.UserServiceImpl;
+import com.space4u.mpkgen.util.PasswordGenerator;
 import com.space4u.mpkgen.util.mappings.MpkMappings;
 import com.space4u.mpkgen.util.mappings.NavMappings;
 import com.space4u.mpkgen.util.mappings.RoleMappings;
@@ -89,7 +90,8 @@ public class UserController {
 
     @GetMapping(NavMappings.USERS_EDIT_USER_FORM)
     public String showUpdateUserForm(@RequestParam("userId") int id, Model model) {
-        uploadUserProfile(id, model);
+        CrmUser crmUser = uploadUserProfile(id);
+        model.addAttribute("crmUser", crmUser);
         return MpkMappings.USERS_UPDATE;
     }
 
@@ -126,12 +128,13 @@ public class UserController {
 
     @GetMapping(NavMappings.USERS_PROFILE)
     public String showUserProfile(Model model) {
-        uploadUserProfile(UserServiceImpl.sessionUserId, model);
+        CrmUser crmUser = uploadUserProfile(UserServiceImpl.sessionUserId);
+        model.addAttribute("crmUser", crmUser);
         return MpkMappings.USERS_PROFILE;
     }
 
-    @PostMapping("/password-reset")
-    public String passwordReset(
+    @PostMapping("/password-change")
+    public String passwordChange(
             @Valid @ModelAttribute("crmUser") CrmUser crmUser,
             BindingResult bindingResult) {
 
@@ -148,6 +151,17 @@ public class UserController {
         return MpkMappings.USERS_NEW_USER_CONFIRMATION;
     }
 
+    @GetMapping("/password-reset")
+    public String passwordReset(@RequestParam("userId") int id, Model model) {
+        PasswordGenerator passwordGenerator = new PasswordGenerator();
+        CrmUser crmUser = uploadUserProfile(id);
+        String password = passwordGenerator.randomPassword();
+        crmUser.setPassword(password);
+        model.addAttribute("crmUser", crmUser);
+        userService.save(crmUser, false);
+        return MpkMappings.USERS_PASSWORD_RESET;
+    }
+
     @GetMapping(NavMappings.USERS_DELETE)
     public String delete(@RequestParam("userId") int id) {
         userService.findById(id).getRoles().clear();
@@ -155,7 +169,7 @@ public class UserController {
         return "redirect:" + NavMappings.USERS + NavMappings.USERS_LIST;
     }
 
-    private void uploadUserProfile(int id, Model model) {
+    private CrmUser uploadUserProfile(int id) {
         User user = userService.findById(id);
         String role = RoleMappings.findRoleName(user.getRoles().size());
 
@@ -165,6 +179,6 @@ public class UserController {
         crmUser.setFirstName(user.getFirstName());
         crmUser.setLastName(user.getLastName());
         crmUser.setRoles(role);
-        model.addAttribute("crmUser", crmUser);
+        return crmUser;
     }
 }
