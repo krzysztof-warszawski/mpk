@@ -4,6 +4,7 @@ import com.space4u.mpkgen.util.mappings.MpkMappings;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,8 +26,8 @@ public class FolderCreator {
     public void createOfferFolders() throws IOException {
         String location = getCorePath() + date + "_" + buildingNum + "_" + buildingName
                 + "_" + floor + "_" + tenant;
-        Files.createDirectory(Paths.get(location));
-        String subPath = location + "/" + date + "_" + buildingNum + "_" + tenant + "_";
+        Files.createDirectories(Paths.get(location));
+        String subPath = location + File.separator + date + "_" + buildingNum + "_" + tenant + "_";
         String subFolderLocation = subPath + "Dostawcy";
         Files.createDirectory(Paths.get(subFolderLocation));
     }
@@ -34,8 +35,8 @@ public class FolderCreator {
 
     public void createFolders() throws IOException {
         String location = getCorePath() + mpk + "_" + date + "_" + buildingName + "_" + floor + "_" + tenant;
-        Files.createDirectory(Paths.get(location));
-        String subPath = location + "/" + mpk + "_";
+        Files.createDirectories(Paths.get(location));
+        String subPath = location + File.separator + mpk + "_";
         String subFolderLocation = subPath + "DokumentacjaPowykonawcza";
         Files.createDirectory(Paths.get(subFolderLocation));
     }

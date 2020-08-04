@@ -34,7 +34,7 @@ public class FolderCreatorTest {
     public void createFolders() throws IOException {
         folder = new FolderCreator();
         folder.setMpk("340042");
-        folder.setDate("202002");
+        folder.setDate("202003");
         folder.setBuildingName("Nemo");
         folder.setFloor("1");
         folder.setTenant("Coca Cola");
@@ -44,6 +44,13 @@ public class FolderCreatorTest {
         String location = folder.getCorePath() + folder.getMpk() + "_" + folder.getDate() + "_"
                 + folder.getBuildingName() + "_" + folder.getFloor() + "_" + folder.getTenant();
 
+        System.out.println(location);
         assertTrue(Files.exists(Paths.get(location)));
+    }
+
+    @org.junit.Test
+    public void createFoldersCrossPlatform() throws IOException {
+        String home = System.getProperty("user.home");
+        System.out.println(home);
     }
 }

@@ -1,8 +1,10 @@
 package com.space4u.mpkgen.util.mappings;
 
+import java.io.File;
+
 public final class MpkMappings {
 
-    public static final String CORE_PATH = "C:\\users\\e495405\\PRIV\\FOLDER_MPK";
+    public static final String CORE_PATH = System.getProperty("user.home") + File.separator + "PRIV" + File.separator + "FOLDER_MPK";
 
     // ============ BUILDINGS ================ //
     public static final String BUILDING_CHOOSE = "/buildings/building_choose";
