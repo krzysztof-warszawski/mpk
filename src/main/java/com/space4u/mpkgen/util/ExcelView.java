@@ -24,7 +24,6 @@ public class ExcelView extends AbstractXlsView {
         final List<Project> projects = (List<Project>) map.get("projects");
         final Sheet sheet = workbook.createSheet();
 
-        //sheet.setDefaultColumnWidth(25);
         addHeaderRow(sheet);
 
         projects.forEach(project -> createRow(sheet, project));

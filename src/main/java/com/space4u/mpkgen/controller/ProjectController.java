@@ -56,13 +56,13 @@ public class ProjectController {
     public String saveEditedProject(@ModelAttribute("addProjectRequest") @Valid AddProjectRequest request, BindingResult result,
                                     Model model){
         if(result.hasErrors()){
-            //zwraca /projects/editProject
+            // zwraca /projects/editProject
             return setParametersForEditing(model,request,projectId);
         }
         else {
-            //przy edycji nie ma też automatycznej generacji projektu gwarancyjnego
+            // przy edycji nie ma też automatycznej generacji projektu gwarancyjnego
             // w przypadku wybrania opcji realizacja
-            //następuje wyliczanie nowego MPK
+            // następuje wyliczanie nowego MPK
             Project oldProject = projectService.getProjectById(projectId);
             Building oldBuilding = oldProject.getBuilding();
             projectService.updateProject(request, projectId);

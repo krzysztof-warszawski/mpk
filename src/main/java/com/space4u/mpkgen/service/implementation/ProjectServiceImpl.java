@@ -65,8 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> findAll() {
         List<Project> projectList = projectRepository.findAll();
-        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName(),String.CASE_INSENSITIVE_ORDER)); // czy projects.sort(Comparator.comparing(o -> o.getBuilding().getName())); ??
-//        projectList.sort(Comparator.comparing(o -> o.getBuilding().getName()));
+        projectList.sort(Comparator.comparing(project -> project.getBuilding().getName(),String.CASE_INSENSITIVE_ORDER));
 
         return projectList;
     }
@@ -170,20 +169,4 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return noOfferProjects;
     }
-
-    //    private Building extractBuildingFromRepository(int buildingId){
-//        Optional<Building> optionalBuilding = buildingRepository.findById(buildingId);
-//        if(!optionalBuilding.isPresent()){
-//            throw new IllegalArgumentException("There is no such building in database");
-//        }
-//        return optionalBuilding.get();
-//    }
-//
-//    private ServiceType extractServTypeFromRepository(int servTypeId){
-//        Optional<ServiceType> optionalServType = serviceTypeRepository.findById(servTypeId);
-//        if(!optionalServType.isPresent()){
-//            throw new IllegalArgumentException("There is no such servType in database");
-//        }
-//        return optionalServType.get();
-//    }
 }

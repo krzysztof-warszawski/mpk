@@ -36,8 +36,5 @@ public class CrmUser {
     @Size(min = 1, message = "jest polem obowiązkowym")
     private String lastName;
 
-//    @NotNull(message = "jest polem obowiązkowym")
-//    @Size(min = 1, message = "jest polem obowiązkowym")
     private String roles;
-
 }
