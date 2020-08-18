@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-//@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,13 +32,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/employees/showForm*").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers("/employees/save*").hasAnyRole("MANAGER", "ADMIN")
+                .antMatchers("/users/showUserProfile").hasRole("EMPLOYEE")
                 .antMatchers("/users/**").hasAnyRole("MANAGER", "ADMIN")
                 .antMatchers("/projects/delete").hasRole("ADMIN")
+                .antMatchers("/projects/editableProjects").hasRole("MANAGER")
                 .antMatchers("/projects/edit").hasRole("MANAGER")
                 .antMatchers("/projects/saveEditedProject").hasRole("MANAGER")
-                .antMatchers("/projects/**").hasRole("EMPLOYEE")
-                .antMatchers("/buildings/**").hasRole("EMPLOYEE")
-                .antMatchers("/mpk/**").hasRole("EMPLOYEE")
+//                .antMatchers("/projects/**").hasRole("EMPLOYEE")
+//                .antMatchers("/buildings/**").hasRole("EMPLOYEE")
+//                .antMatchers("/mpk/**").hasRole("EMPLOYEE")
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin()
